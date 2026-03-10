@@ -1,0 +1,704 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+body {
+    background-color: #ffffff;
+    margin: 0;
+    font-family: 'Montserrat', "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Header */
+.landing-header {
+    background-color: #1a1615;
+    /* border-bottom: 2px solid #8e6c31; */
+    height: 80px;
+    position: relative;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+}
+
+.landing-nav-link {
+    color: #fdf6d4;
+    text-decoration: none;
+    font-size: 14px;
+    margin: 0 16px;
+    transition: 0.3s;
+    font-weight: 500;
+}
+
+.landing-nav-link:hover {
+    color: #ffffff;
+}
+
+.landing-phone-btn {
+    /* border: 1px solid #8e6c31; */
+    border-radius: 20px;
+    padding: 6px 16px;
+    color: #fed58d;
+    display: inline-flex;
+    align-items: center;
+    font-size: 13px;
+    text-decoration: none;
+    margin-left: 10px;
+    background-color: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(50px);
+    font-weight: 500;
+}
+
+.landing-logo-wrapper {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0px;
+    z-index: 100;
+    background-color: #1a1615;
+    border-radius: 50%;
+    width: 180px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #8e6c3139;
+}
+
+.landing-logo-wrapper img {
+    max-width: 80%;
+    max-height: 80%;
+    object-fit: contain;
+}
+
+/* Hero Section */
+.landing-hero {
+    background: linear-gradient(180deg, #1a1615 0%, #1a1615 65%, #d1a14a 85%, #ffffff 100%);
+    padding-bottom: 100px;
+    padding-top: 100px;
+}
+
+/* Left Column */
+.gold-card {
+    background: linear-gradient(135deg, #e7c87c 0%, #dca249 100%);
+    border-radius: 12px;
+    padding: 24px 24px 16px 24px;
+    color: #111;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.silver-card {
+    background: linear-gradient(135deg, #f4f4f4 0%, #dcdcdc 100%);
+    border-radius: 12px;
+    padding: 24px 24px 16px 24px;
+    color: #111;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.card-title {
+    font-size: 20px;
+    font-weight: bold !important;
+    margin-bottom: 4px;
+}
+
+.card-title span {
+    font-size: 20px;
+    font-weight: 700 !important;
+    margin-bottom: 4px;
+}
+
+.card-price {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.card-footer-line {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #555;
+    font-weight: 500;
+}
+
+/* Flash Price Classes */
+.price-flash {
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: background-color 0.1s ease;
+}
+
+/* Center Column */
+.action-box {
+    background: linear-gradient(90deg, #edda99 0%, #c49942 100%);
+    border-radius: 10px;
+    padding: 0 20px;
+    height: 30%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    font-weight: 800;
+    color: #000;
+    font-size: 18px;
+}
+
+/* Right Column */
+.spot-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 0 20px;
+    height: 30%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.spot-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.spot-title {
+    font-size: 14px;
+    color: #000;
+    font-weight: 700 !important;
+    margin-bottom: 2px;
+}
+
+.spot-price-text {
+    font-size: 20px;
+    font-weight: 700;
+    color: #8e6c31;
+}
+
+.spot-high-low {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 4px;
+}
+
+.spot-high {
+    color: #009900;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.spot-low {
+    color: #cc0000;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+/* About Us Section */
+.about-section {
+    background: #ffffff;
+    padding: 40px 0 80px 0;
+}
+
+.about-subtitle {
+    font-family: 'Playfair Display', serif !important;
+    font-size: 32px !important;
+    color: #111 !important;
+    margin: 0 0 6px 0 !important;
+    font-weight: 400 !important;
+    line-height: 1 !important;
+}
+
+.about-title {
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 26px !important;
+    font-weight: 700 !important;
+    color: #111 !important;
+    margin: 0 0 24px 0 !important;
+    line-height: 1.2 !important;
+}
+
+.about-desc {
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: #444 !important;
+    line-height: 1.8 !important;
+    margin: 0 0 24px 0 !important;
+}
+
+.about-image-wrapper {
+    position: relative;
+    width: 380px;
+    height: 380px;
+    margin: 0 auto;
+}
+
+.about-black-circle {
+    width: 100%;
+    height: 100%;
+    background-color: #151211;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+}
+
+.about-inner-circle {
+    width: 90%;
+    height: 90%;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.diamond-dec {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    /* Normally you would set background-image for diamonds if available */
+}
+
+/* Download Banner */
+.download-section {
+    background: #ffffff;
+    padding: 40px 0 80px 0;
+}
+
+.download-card {
+    background: linear-gradient(90deg, #c49942 0%, #edda99 50%, #c49942 100%);
+    border-radius: 12px;
+    min-height: 220px;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.download-phone {
+    position: absolute;
+    left: 8%;
+    bottom: -20px;
+    height: 130%;
+    z-index: 10;
+}
+
+.download-text-content {
+    margin-left: 38%;
+    padding: 30px;
+}
+
+.download-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 26px !important;
+    color: #444;
+    margin-bottom: 4px;
+    font-weight: 600 !important;
+}
+
+.download-title {
+    font-size: 34px !important;
+    font-weight: 700 !important;
+    color: #000;
+    margin-bottom: 20px !important;
+}
+
+.store-btn {
+    height: 70px;
+    margin-right: 12px;
+    cursor: pointer;
+}
+
+/* Footer */
+.landing-footer {
+    background-color: #151211;
+    padding: 60px 0 25px 0;
+    color: #ccc;
+}
+
+.footer-logo {
+    margin-bottom: 20px;
+    width: 90%;
+}
+
+.footer-text {
+    font-size: 18px;
+    line-height: 1.8;
+    color: #999;
+    margin-bottom: 25px;
+}
+
+.footer-col-title {
+    color: #a88540;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    padding-top: 12px;
+}
+
+.footer-links li {
+    margin-bottom: 12px;
+}
+
+.footer-links a {
+    color: #aaa;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+}
+
+.footer-links a:hover {
+    color: #fff;
+}
+
+.contact-btn-box {
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 12px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 1px;
+    font-size: 14px;
+    width: 220px;
+    margin: 0 0 15px 0;
+}
+
+.contact-number {
+    font-size: 32px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 1px;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 20px;
+    margin-top: 40px;
+    font-size: 12px;
+    color: #666;
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 900px) {
+    .landing-header {
+        height: auto;
+    }
+
+    .landing-logo-wrapper {
+        position: relative;
+        top: 0;
+        transform: none;
+        left: 0;
+        width: 140px;
+        height: 80px;
+    }
+
+    .landing-hero {
+        padding-top: 30px;
+        padding-bottom: 30px;
+        background: linear-gradient(180deg, #1a1615 0%, #1a1615 25%, #d1a14a 60%, #ffffff 100%);
+    }
+
+    /* APP LIKE MOBILE STYLES */
+    .app-mobile-view {
+        font-family: 'Poppins', 'Montserrat', sans-serif;
+    }
+
+    .app-live-rates-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .app-rate-card {
+        border-radius: 12px;
+        padding: 7px 15px;
+        position: relative;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .app-gold-card {
+        background: linear-gradient(180deg, #895c00 0%, #f2ddae 100%);
+        color: #3e2723;
+        border: 1px solid #ac8638;
+    }
+
+    .app-silver-card {
+        background: linear-gradient(135deg, #ffffff 0%, #dcdcdc 100%);
+        color: #333;
+        border: 1px solid #dcdcdc;
+    }
+
+    .app-rate-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 2px;
+    }
+
+    .app-metal-name {
+        font-weight: 700;
+        font-size: 16px;
+    }
+
+    .app-purity {
+        font-weight: 800;
+        font-size: 0.65rem;
+        opacity: 0.8;
+        color: #000;
+        margin-left: 5px;
+    }
+
+    .app-silver-card .app-purity {
+        color: #946a14;
+    }
+
+    .app-rate-price {
+        font-size: 16px;
+        border-bottom: 1px solid rgba(205, 205, 205, 0.4);
+        padding-bottom: 5px;
+        font-weight: 700;
+    }
+
+    .app-gold-card .app-rate-price {
+        border-bottom: 1px solid rgba(189, 164, 107, 0.5);
+    }
+
+    .app-unit {
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .app-rate-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.7rem;
+        font-weight: 600;
+        padding-top: 3px;
+    }
+
+    .app-live-tag {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .app-dot.red {
+        background-color: #d32f2f;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+    }
+
+    .app-change-tag.up {
+        color: #1b5e20;
+    }
+
+    /* Actions Grid */
+    .app-actions-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+
+    .app-action-box {
+        border-radius: 8px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .app-gold-gradient {
+        background: linear-gradient(180deg, #885c04 0%, #efd291 100%);
+        box-shadow: 0px 0px 1px #895c00;
+    }
+
+    .app-action-img-placeholder {
+        width: 35px;
+        height: 35px;
+        margin-bottom: 6px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .app-action-img-placeholder img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+    }
+
+    .app-action-text {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: black;
+    }
+
+    /* Spot Grid */
+    .app-spot-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+
+    .app-spot-box {
+        background: #ffffff;
+        border: 1px solid #b79237;
+        border-radius: 8px;
+        padding: 6px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .app-spot-title {
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: black;
+        margin-bottom: 2px;
+    }
+
+    .app-spot-price {
+        font-size: 0.95rem;
+        font-weight: 800;
+        color: #000000;
+        margin-bottom: 2px;
+        padding-bottom: 2px;
+        border-bottom: 1px solid #b8860b2b;
+    }
+
+    .app-gold-text {
+        color: #000000;
+    }
+
+    .app-green-bg-text {
+        background-color: #3dc560;
+        color: white !important;
+        border-radius: 4px;
+        display: inline-block;
+        padding: 0 4px;
+        width: fit-content;
+    }
+
+    .app-normal-text {
+        color: #000;
+    }
+
+    .app-spot-range {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.6rem;
+        color: black;
+        font-weight: 600;
+    }
+
+    .about-section {
+        padding: 40px 0;
+        text-align: center;
+    }
+
+    .about-image-wrapper {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        aspect-ratio: 1;
+        margin: 0 auto;
+    }
+
+    .download-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 30px 15px;
+        min-height: auto;
+    }
+
+    .download-phone {
+        position: static;
+        height: 180px;
+        margin-bottom: 20px;
+    }
+
+    .download-subtitle {
+        font-size: 22px !important;
+    }
+
+    .download-title {
+        font-size: 28px !important;
+    }
+
+    .download-text-content {
+        margin-left: 0;
+        padding: 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .download-text-content>div {
+        justify-content: center;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .store-btn {
+        height: auto;
+        min-height: 40px;
+        max-height: 52px;
+        width: 45%;
+        margin-right: 0;
+        object-fit: contain;
+    }
+
+    .footer-logo {
+        width: 60%;
+        margin: 0 auto 20px auto;
+        display: block;
+    }
+
+    .landing-footer {
+        text-align: center;
+    }
+
+    .footer-socials {
+        justify-content: center;
+    }
+
+    .footer-text {
+        text-align: center;
+    }
+
+    .footer-col-title {
+        margin-top: 20px;
+    }
+}

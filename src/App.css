@@ -1,0 +1,22 @@
+a {
+  text-decoration: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.styledScroll::-webkit-scrollbar {
+  width: 7px;
+}
+
+.styledScroll::-webkit-scrollbar-track {
+  border-radius: 20%;
+}
+
+.styledScroll::-webkit-scrollbar-thumb {
+  background-color: #7e7e7e3e;
+  border-radius: 30px;
+}

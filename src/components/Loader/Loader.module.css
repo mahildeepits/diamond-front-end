@@ -1,0 +1,36 @@
+.mainContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    position: relative;
+}
+
+
+.loader {
+    transform: translateZ(1px);
+}
+
+.loader:after {
+    content: '₹';
+    display: inline-block;
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 60px;
+    font-size: 30px;
+    font-weight: 600;
+    background: #000000;
+    color: hsl(0, 0%, 100%);
+    border: 4px double;
+    box-sizing: border-box;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, .1);
+}
+
+.errorText {
+    font-size: 20px;
+    font-weight: 500;
+    color: red
+}

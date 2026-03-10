@@ -1,0 +1,33 @@
+.glass {
+    height: 100%;
+    width: 100%;
+    background: rgba(26, 22, 21, 0.85);
+    /* matching #1a1615 with opacity */
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid #d1a14a;
+    /* Golden border */
+    color: #fdf6d4;
+}
+
+.adminImg {
+    height: 500px;
+    width: 500px;
+    object-fit: contain;
+}
+
+@media (max-width: 1080px) {
+    .adminImg {
+        height: 400px;
+        width: 400px;
+    }
+}
+
+@media (max-width: 950px) {
+    .adminImg {
+        height: 350px;
+        width: 350px;
+    }
+}
