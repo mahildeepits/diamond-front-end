@@ -5,7 +5,7 @@ import { Box, InputAdornment, TextField } from "@mui/material";
 export default function SearchComponent({ handleChange, searchValue = "" }) {
   return (
     <>
-      <Box sx={{ width: "100%", mb: 2 }}>
+      <Box sx={{ width: "100%", mb: { sm: 2, md: 0 } }}>
         <TextField
           value={searchValue}
           onChange={(e) => handleChange(e.target.value)}

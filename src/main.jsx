@@ -118,7 +118,7 @@ const theme = createTheme({
             color: "#d1a14a",
           },
           "& .MuiOutlinedInput-root": {
-            background: "#f9f9f9",
+            background: "#fff",
             border: "1px solid rgba(0, 0, 0, 0.1)",
             borderRadius: "12px",
             color: "#1a1615",
