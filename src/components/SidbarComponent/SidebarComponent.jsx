@@ -16,7 +16,7 @@ export default function SidebarComponent() {
     <>
       {/* Menu Icon Button */}
       <IconButton
-        sx={{ position: "absolute", top: 1, left: 10, zIndex: 1300, display: { xs: "none", sm: "block" } }}
+        sx={{ position: "absolute", top: 1, left: 10, zIndex: 9, display: { xs: "none", sm: "block" } }}
         onClick={() => setOpen(!open)}>
         <Badge badgeContent={(badgeCount > 0 && !open) ? badgeCount : 0} color="primary" overlap="circular" invisible={false}>
           <MenuIcon />

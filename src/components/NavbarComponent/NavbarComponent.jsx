@@ -151,7 +151,7 @@ export default function NavbarComponent() {
                 <img
                   src={AnshLogo}
                   alt="logo"
-                  style={{ height: "100%", marginTop: "5px" }}
+                  style={{ height: "30px", marginTop: "5px" }}
                 />
                 {/* <p>Diamond Bullion</p> */}
               </Typography>

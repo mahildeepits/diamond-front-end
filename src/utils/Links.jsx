@@ -9,6 +9,7 @@ import FormatListBulletedOutlinedIcon from "@mui/icons-material/FormatListBullet
 import GroupWorkOutlinedIcon from "@mui/icons-material/GroupWorkOutlined";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import ChatIcon from '@mui/icons-material/Chat';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import { useSelector } from "react-redux";
 
 
@@ -123,6 +124,14 @@ export const sidebarLinks = () => {
       icon: <TrendingUpIcon className="sideIcon" />,
       href: "/coin-management",
       text: "Manage Gold and Silver coin rates and disparity.",
+      show: (isAdmin)
+    },
+    {
+      id: 13,
+      name: "WA Connect",
+      icon: <WhatsAppIcon className="sideIcon" />,
+      href: "/wa/connect",
+      text: "Connect your WhatsApp for notifications.",
       show: (isAdmin)
     },
     // {

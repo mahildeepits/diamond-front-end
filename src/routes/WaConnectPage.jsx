@@ -34,17 +34,32 @@ export default function WaConnect() {
         })
             .then(res => res.json())
             .then(res => {
-                setIsLoading(false);
                 if (res?.data?.qrcode) {
                     setqrcode(res?.data?.qrcode);
+                    setIsLoading(false);
                 } else {
-                    // If no QR code, let's re-check status in case it connected in between
-                    setIsConnected(true);
+                    // If no QR code, it might be connecting or just not ready. Check actual status.
+                    fetch(import.meta.env.VITE_LIVE_SERVER_URL + "api/v1/wa/status")
+                        .then(r => r.json())
+                        .then(r => {
+                            if (r?.isConnected) {
+                                setIsConnected(true);
+                                setIsLoading(false);
+                            } else {
+                                // Still not connected and no QR. Try again in a few seconds.
+                                setTimeout(() => {
+                                    fetchQRcode();
+                                }, 3000);
+                            }
+                        })
+                        .catch(err => {
+                            setIsLoading(false);
+                        });
                 }
             }).catch(res => {
                 setIsLoading(false);
                 console.error(res);
-            })
+            });
     }, []);
 
     const logout = useCallback(() => {
@@ -54,12 +69,13 @@ export default function WaConnect() {
             .then(() => {
                 setIsConnected(false);
                 setqrcode(null);
+                // Start polling for QR code again
                 fetchQRcode();
             })
             .catch(res => {
                 setIsLoading(false);
                 console.error(res);
-            })
+            });
     }, [fetchQRcode]);
 
     useEffect(() => {
