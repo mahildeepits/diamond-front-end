@@ -13,7 +13,7 @@ import SilverImg from '../../assets/images/buy-silver-icon.png';
 import CoinImg from '../../assets/images/buy-coinbar-icon.png';
 import HeroLogoImg from '../../assets/images/hero-logo.png';
 import LongLogoImg from '../../assets/images/logo-hori.png';
-import { ContentCopyOutlined, CopyAllOutlined, CopyAllTwoTone, Login, LogoutOutlined } from '@mui/icons-material';
+import { Call, ContentCopyOutlined, CopyAllOutlined, CopyAllTwoTone, Login, LogoutOutlined } from '@mui/icons-material';
 import { CopyIcon } from "lucide-react";
 import { toast } from "react-toastify";
 
@@ -310,7 +310,8 @@ export default function FrontEndLiveRatesComponent({ setOpenBookingModal }) {
                         flex: 1,
                     }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingRight: '10px' }}>
-                            <img src="/images/calling-icon.png" alt="TDS" style={{ width: '28px' }} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentNode.innerHTML = '📄' }} />
+                            {/* <img src="/images/calling-icon.png" alt="TDS" style={{ width: '28px' }} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentNode.innerHTML = '📄' }} /> */}
+                            <Call sx={{ width: '28px', height: '28px', color: '#b79237' }} />
                         </Box>
                         <Box sx={{ display: 'flex', flexDirection: 'column', borderLeft: '1px solid rgba(205, 205, 205, 0.4)', paddingLeft: '8px', flex: 1 }}>
                             <Typography sx={{ fontWeight: 600, fontSize: { xs: '0.65rem', sm: '0.7rem' }, color: '#000000', whiteSpace: 'nowrap' }}>Contact</Typography>

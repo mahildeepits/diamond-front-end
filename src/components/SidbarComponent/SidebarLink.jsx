@@ -16,6 +16,11 @@ export default function SideLinks({ handleClose }) {
   const { pathname } = useLocation();
   const userDetails = useSelector((state) => state.CurrentUser.user);
   const links = sidebarLinks();
+
+  const isActive = (href) => {
+    if (href === '/') return pathname === '/';
+    return pathname.startsWith(href);
+  };
   return (
     <nav>
       <List>
@@ -29,16 +34,16 @@ export default function SideLinks({ handleClose }) {
                 sx={{
                   mb: 1,
                   borderRadius: "15px",
-                  color: pathname === href ? "#1a1615" : "text.secondary",
-                  border: pathname === href ? "none" : "1px solid transparent",
-                  backgroundColor: pathname === href ? "primary.main" : "transparent",
+                  color: isActive(href) ? "#1a1615" : "text.secondary",
+                  border: isActive(href) ? "none" : "1px solid transparent",
+                  backgroundColor: isActive(href) ? "primary.main" : "transparent",
                   "&:hover": {
-                    color: pathname === href ? "#1a1615" : "primary.main",
-                    border: pathname === href ? "none" : "1px solid",
+                    color: isActive(href) ? "#1a1615" : "primary.main",
+                    border: isActive(href) ? "none" : "1px solid",
                     borderColor: "primary.main",
                   },
                   "&:hover .sideIcon": {
-                    color: pathname === href ? "#1a1615" : "primary.main",
+                    color: isActive(href) ? "#1a1615" : "primary.main",
                     fontWeight: 600,
                   },
                   ".MuiListItemIcon-root": {
@@ -63,7 +68,7 @@ export default function SideLinks({ handleClose }) {
                 >
                   <ListItemIcon
                     sx={{
-                      color: pathname === href ? "#1a1615" : "primary.main",
+                      color: isActive(href) ? "#1a1615" : "primary.main",
                     }}
                   >
                     <Tooltip title={name}>{icon}</Tooltip>
@@ -75,7 +80,7 @@ export default function SideLinks({ handleClose }) {
                       sx={{
                         fontSize: "14px",
                         fontWeight:
-                          pathname === href
+                          isActive(href)
                             ? 600
                             : 500,
                       }}

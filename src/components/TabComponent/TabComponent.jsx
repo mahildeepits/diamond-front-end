@@ -60,7 +60,7 @@ export default function TabComponent({
             },
             "& .MuiTab-root": {
               width: "auto",
-              color: "white.dark",
+              color: "white",
               fontSize: 18,
               textTransform: "capitalize",
               borderRadius: "100px ",

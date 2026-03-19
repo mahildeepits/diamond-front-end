@@ -13,7 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import Logo from "../../../assets/images/ansh-icon.png";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router-dom";
 import LoginIcon from '@mui/icons-material/Login';
 
 const pages = [
@@ -47,8 +47,13 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function FrontendSidebar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [activeLink, setActiveLink] = React.useState('');  
+  const location = useLocation();
   const navigate = useNavigate(); // Hook for navigation
+
+  const isActive = (url) => {
+    if (url === '/') return location.pathname === '/';
+    return location.pathname.startsWith(url);
+  };
 
   const handleOpenNavMenu = (event) => {
     console.log(event);
@@ -64,7 +69,6 @@ function FrontendSidebar() {
     setAnchorElNav(null);
     if (url) {
       navigate(url); // Navigate to the specified URL
-      setActiveLink(url);
     }
   };
 
@@ -121,9 +125,9 @@ function FrontendSidebar() {
             >
               {pages.map((item) => (
                 <MenuItem key={item.name} onClick={() => handleCloseNavMenu(item.url)} sx={{
-                 color: activeLink === item.url ? 'white' : 'black',
-                    fontWeight: activeLink === item.url ? 'bold' : 'normal',
-                    bgcolor: activeLink === item.url ? '#000088' : 'none',
+                 color: isActive(item.url) ? 'white' : 'black',
+                    fontWeight: isActive(item.url) ? 'bold' : 'normal',
+                    bgcolor: isActive(item.url) ? '#000088' : 'none',
                 }} >
                   <Typography sx={{
                     textAlign: 'center',
@@ -155,9 +159,9 @@ function FrontendSidebar() {
                 sx={{
                   my: 2,
                   display: 'block',
-                  color: activeLink === item.url ? 'white' : 'black',
-                  fontWeight: activeLink === item.url ? 'bold' : 'normal',
-                  bgcolor: activeLink === item.url ? '#000088' : 'none',
+                  color: isActive(item.url) ? 'white' : 'black',
+                  fontWeight: isActive(item.url) ? 'bold' : 'normal',
+                  bgcolor: isActive(item.url) ? '#000088' : 'none',
                 }}
               >
                 {item.name}

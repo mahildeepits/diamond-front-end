@@ -27,6 +27,8 @@ export default function RateDifferenceFormComponent({ data }) {
     including_silver_tds: 0,
     next_month_silver_tds: 0,
     next_month_silver_rate_status: 0,
+    including_retail_gold_tds: 0,
+    retail_gold_rate_status: 0,
   };
   const { values, handleBlur, handleChange, handleSubmit, setValues, setFieldValue } =
     useFormik({
@@ -45,6 +47,8 @@ export default function RateDifferenceFormComponent({ data }) {
         including_silver_tds: data.including_silver_tds || 0,
         next_month_silver_tds: data.next_month_silver_tds || 0,
         next_month_silver_rate_status: data.next_month_silver_rate_status || 0,
+        including_retail_gold_tds: data.including_retail_gold_tds || 0,
+        retail_gold_rate_status: data.retail_gold_rate_status || 0,
       });
     }
   }, [data, setValues]);
@@ -53,6 +57,9 @@ export default function RateDifferenceFormComponent({ data }) {
   };
   const handleSilverSwitchChange = (event) => {
     setFieldValue("next_month_silver_rate_status", event.target.checked ? 1 : 0);
+  };
+  const handleRetailGoldSwitchChange = (event) => {
+    setFieldValue("retail_gold_rate_status", event.target.checked ? 1 : 0);
   };
   const handleFormSubmit = async () => {
     try {
@@ -272,6 +279,47 @@ export default function RateDifferenceFormComponent({ data }) {
         />
       </Box> */}
       {/* Silver TDS End */}
+      <Box sx={{ my: 2 }}>
+        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <Typography component={"div"} sx={{ mb: 1 }}>
+            Enter your rate RETAIL GOLD difference
+          </Typography>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Typography variant="body2" sx={{ mr: 1 }}>
+              Show / Hide
+            </Typography>
+            <Switch
+              checked={values.retail_gold_rate_status === 1}
+              onChange={handleRetailGoldSwitchChange}
+              name={"retail_gold_rate_status"}
+            />
+          </Box>
+        </Box>
+        <TextField
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <CurrencyRupee color="primary" />
+              </InputAdornment>
+            ),
+          }}
+          name={"including_retail_gold_tds"}
+          value={values.including_retail_gold_tds || ""}
+          placeholder="Enter retail gold difference here"
+          onChange={handleChange}
+          onBlur={handleBlur}
+          type="number"
+          disabled={isSubAdmin}
+          fullWidth
+          sx={
+            {
+              "& .MuiOutlinedInput-input": {
+                color: "black",
+              },
+            }
+          }
+        />
+      </Box>
       <Box>
         <LoadingButton
           loading={isLoading}

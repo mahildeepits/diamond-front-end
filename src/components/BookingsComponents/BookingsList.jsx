@@ -210,22 +210,53 @@ export default function BookingsList() {
       renderCell: (params) => {
         const { quantity, rate, total_amount } = params.value;
         const metal = params?.row?.type || 'gold';
+        const isCoin = !!params?.row?.coin_id;
+        const coinName = params?.row?.coin_name;
+        const coinGrams = params?.row?.coin_grams;
+
         return (
           <div>
             <Box sx={{
-              display: 'inline-block',
-              px: 1,
+              display: 'flex',
+              gap: 0.5,
               mb: 0.5,
-              borderRadius: '4px',
-              fontSize: '10px',
-              fontWeight: 'bold',
-              textTransform: 'uppercase',
-              backgroundColor: metal === 'gold' ? '#FFD700' : '#C0C0C0',
-              color: '#000'
+              alignItems: 'center'
             }}>
-              {metal}
+              <Box sx={{
+                display: 'inline-block',
+                px: 1,
+                borderRadius: '4px',
+                fontSize: '10px',
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                backgroundColor: metal === 'gold' ? '#FFD700' : (metal === 'retail_gold' ? '#FFAC33' : '#C0C0C0'),
+                color: '#000'
+              }}>
+                {metal === 'retail_gold' ? 'Retail Gold' : metal}
+              </Box>
+              {isCoin && (
+                <Box sx={{
+                  display: 'inline-block',
+                  px: 1,
+                  borderRadius: '4px',
+                  fontSize: '10px',
+                  fontWeight: 'bold',
+                  backgroundColor: '#000',
+                  color: '#FFD700',
+                  border: '1px solid #FFD700'
+                }}>
+                  COIN
+                </Box>
+              )}
             </Box>
-            <div>Quantity: <strong>{quantity || 0}</strong></div>
+            
+            {isCoin && (
+              <div style={{ fontSize: '12px', fontWeight: 'bold', color: '#af9560', marginBottom: '4px' }}>
+                {coinName} ({coinGrams}g)
+              </div>
+            )}
+
+            <div>{isCoin ? 'Units' : 'Quantity'}: <strong>{quantity || 0}</strong></div>
             <div>Rate: <strong>{rate || 0}</strong></div>
             <div>Amount: <strong>{total_amount || 0}</strong></div>
           </div>

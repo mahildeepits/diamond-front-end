@@ -1,12 +1,13 @@
 import { Navigate, Outlet, useNavigate } from "react-router";
-import FrontendSidebar from "../components/Frontend/Sidebar/FrontendSidebar";
+import LandingHeader from "../components/Frontend/Header/LandingHeader";
+import LandingFooter from "../components/Frontend/Footer/LandingFooter";
 import { Box } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { setCurrentUser, useFetchRateDifferenceQuery } from "../store";
 import { useLocation } from "react-router-dom"; // Import useLocation to check the current route
-import Footer from "../components/Frontend/Footer/Footer";
+// import Footer from "../components/Frontend/Footer/Footer";
 export default function FrontendLayout() {
   const user = useSelector((state) => {
     return state.CurrentUser.user;
@@ -37,11 +38,11 @@ export default function FrontendLayout() {
           {location.pathname !== '/' && (
             <Box
               sx={{
-                borderBottom: "1px solid #E5E5E59E",
+                // borderBottom: "1px solid #E5E5E59E",
               }}
             >
               <header>
-                <FrontendSidebar />
+                <LandingHeader />
               </header>
             </Box>
           )}
@@ -50,8 +51,8 @@ export default function FrontendLayout() {
             sx={{
               minHeight: location.pathname === '/' ? "100vh" : "71.5vh",
               overflowY: location.pathname === '/' ? "visible" : "auto",
-              backgroundColor: location.pathname === '/' ? "transparent" : "sidebar.main",
-              boxShadow: location.pathname === '/' ? "none" : "inset 0.1px 0.1px 3px #aeaeae",
+              background: location.pathname === '/' ? "linear-gradient(180deg, #1a1615 0%, #1a1615 45%, #d1a14a 65%, #ffffff 100%)" : "linear-gradient(180deg, #1a1615 0%, #1a1615 45%, #d1a14a 65%, #ffffff 100%)",
+              // boxShadow: location.pathname === '/' ? "none" : "inset 0.1px 0.1px 3px #aeaeae",
               padding: "0px 0px"
             }}
           >
@@ -60,7 +61,7 @@ export default function FrontendLayout() {
           {location.pathname !== '/' && (
             <Box>
               <footer>
-                <Footer />
+                <LandingFooter />
               </footer>
             </Box>
           )}

@@ -15,9 +15,10 @@ import GoldImg from '../../../assets/images/buy-gold-icon.png';
 import SilverImg from '../../../assets/images/buy-silver-icon.png';
 import CoinImg from '../../../assets/images/buy-coinbar-icon.png';
 import HeroLogoImg from '../../../assets/images/hero-logo.png';
-import LongLogoImg from '../../../assets/images/logo-hori.png';
-import { ContentCopyOutlined, Login, LogoutOutlined, TrendingUpOutlined, InfoOutlined, AccountBalanceOutlined, PhoneOutlined, Call } from '@mui/icons-material';
+import LandingHeader from '../Header/LandingHeader';
+import LandingFooter from '../Footer/LandingFooter';
 import MenuIcon from '@mui/icons-material/Menu';
+import { Call, ContentCopyOutlined, PaymentsOutlined, SellOutlined } from '@mui/icons-material';
 import { toast } from "react-toastify";
 
 export default function NewLandingPage() {
@@ -114,83 +115,8 @@ export default function NewLandingPage() {
     return (
         <React.Fragment>
             {/* Header */}
-            <header className="landing-header">
-                <Container sx={{ borderBottom: '2px solid #8e6c31', padding: { xs: '15px 0', md: '24px' }, width: { xs: '90%', md: '70%' } }}>
-                    <Grid container alignItems="center" sx={{ position: 'relative' }}>
-                        <Grid item xs={12} md={5} sx={{ display: { xs: 'none', md: 'flex' }, gap: 1 }}>
-                            <Link to="#" className="landing-nav-link" style={{ color: '#fff' }}>Live Rates</Link>
-                            <Link to="#" className="landing-nav-link">About Us</Link>
-                            <Link to="#" className="landing-nav-link">Bank Details</Link>
-                        </Grid>
+            <LandingHeader />
 
-                        {/* Mobile Left: Menu Icon */}
-                        <Box sx={{ display: { xs: 'flex', md: 'none' }, position: 'absolute', left: 0, zIndex: 101 }}>
-                            <IconButton sx={{ color: '#fdf6d4', padding: 0 }} onClick={() => setMobileOpen(true)}>
-                                <MenuIcon sx={{ fontSize: '28px' }} />
-                            </IconButton>
-                        </Box>
-
-                        {/* Logo center absolute overlapping */}
-                        <Box sx={{ position: { xs: 'relative', md: 'absolute' }, top: { xs: 0, md: '10px' }, left: { xs: 0, md: '50%' }, transform: { xs: 'none', md: 'translateX(-50%)' }, zIndex: 100, width: { xs: '100%', md: 'auto' }, display: 'flex', justifyContent: 'center' }}>
-                            <Box className="landing-logo-wrapper">
-                                <img src={LogoImg} alt="Diamond Bullion" />
-                            </Box>
-                        </Box>
-
-                        {/* Mobile Right: Login Icon */}
-                        <Box sx={{ display: { xs: 'flex', md: 'none' }, position: 'absolute', right: 0, zIndex: 101 }}>
-                            <Link to="/login" style={{ display: 'flex', alignItems: 'center' }}>
-                                <Login sx={{ fontSize: '28px', color: '#fdf6d4' }} />
-                            </Link>
-                        </Box>
-
-                        <Grid item xs={12} md={7} sx={{ display: { xs: 'none', md: 'flex' }, gap: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
-                            {/* <Link to="#" className="landing-nav-link">Booking Desk</Link> */}
-                            <Link to="#" className="landing-nav-link">Contact</Link>
-                            <a href="tel:+91985625486" className="landing-phone-btn">
-                                <Call style={{ width: '16px', marginRight: '5px' }} /> +91-985625486
-                            </a>
-                            <Link to="/login" className="landing-nav-link" ><Login sx={{ fontSize: '20px', color: '#fdf6d4' }} /></Link>
-                        </Grid>
-                    </Grid>
-                </Container>
-            </header>
-
-            {/* Mobile Drawer */}
-            <Drawer anchor="left" open={mobileOpen} onClose={() => setMobileOpen(false)}>
-                <Box sx={{ width: 280, backgroundColor: '#000', height: '100%', paddingTop: '30px' }}>
-                    <Box sx={{ padding: '0 20px', marginBottom: '30px', display: 'flex', justifyContent: 'center' }}>
-                        <img src={LogoImg} alt="Diamond Bullion" style={{ height: '60px' }} />
-                    </Box>
-                    <List sx={{ display: 'flex', flexDirection: 'column', gap: '10px', padding: '0px' }}>
-                        <ListItem disablePadding onClick={() => setMobileOpen(false)}>
-                            <Link to="#" className="landing-nav-link" style={{ display: 'flex', alignItems: 'center', gap: '15px', width: '100%', color: '#fdf6d4', textDecoration: 'none', padding: '10px 10px' }}>
-                                <TrendingUpOutlined sx={{ fontSize: '24px' }} /> Live Rates
-                            </Link>
-                        </ListItem>
-                        <ListItem disablePadding onClick={() => setMobileOpen(false)}>
-                            <Link to="#" className="landing-nav-link" style={{ display: 'flex', alignItems: 'center', gap: '15px', width: '100%', color: '#fdf6d4', textDecoration: 'none', padding: '10px 10px' }}>
-                                <InfoOutlined sx={{ fontSize: '24px' }} /> About Us
-                            </Link>
-                        </ListItem>
-                        <ListItem disablePadding onClick={() => setMobileOpen(false)}>
-                            <Link to="#" className="landing-nav-link" style={{ display: 'flex', alignItems: 'center', gap: '15px', width: '100%', color: '#fdf6d4', textDecoration: 'none', padding: '10px 10px' }}>
-                                <AccountBalanceOutlined sx={{ fontSize: '24px' }} /> Bank Details
-                            </Link>
-                        </ListItem>
-                        <ListItem disablePadding onClick={() => setMobileOpen(false)}>
-                            <Link to="#" className="landing-nav-link" style={{ display: 'flex', alignItems: 'center', gap: '15px', width: '100%', color: '#fdf6d4', textDecoration: 'none', padding: '10px 10px' }}>
-                                <PhoneOutlined sx={{ fontSize: '24px' }} /> Contact
-                            </Link>
-                        </ListItem>
-                        <ListItem disablePadding onClick={() => setMobileOpen(false)} >
-                            <Link to="/login" className="landing-nav-link" style={{ display: 'flex', alignItems: 'center', gap: '15px', width: '100%', color: '#fdf6d4', textDecoration: 'none', padding: '10px 10px' }}>
-                                <Login sx={{ fontSize: '24px' }} /> Login
-                            </Link>
-                        </ListItem>
-                    </List>
-                </Box>
-            </Drawer>
 
             {/* Hero Section */}
             <section className="landing-hero">
@@ -315,7 +241,8 @@ export default function NewLandingPage() {
                                 flex: 1,
                             }}>
                                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingRight: '10px' }}>
-                                    <img src="/images/calling-icon.png" alt="TDS" style={{ width: '28px' }} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentNode.innerHTML = '📄' }} />
+                                    {/* <img src="/images/calling-icon.png" alt="TDS" style={{ width: '28px' }} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentNode.innerHTML = '📄' }} /> */}
+                                    <Call sx={{ width: '28px', height: '28px', color: '#b79237' }} />
                                 </Box>
                                 <Box sx={{ display: 'flex', flexDirection: 'column', borderLeft: '1px solid rgba(205, 205, 205, 0.4)', paddingLeft: '8px', flex: 1 }}>
                                     <Typography sx={{ fontWeight: 600, fontSize: { xs: '0.65rem', sm: '0.7rem' }, color: '#000000', whiteSpace: 'nowrap' }}>Contact</Typography>
@@ -333,7 +260,8 @@ export default function NewLandingPage() {
                                 flex: 1,
                             }}>
                                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingRight: '10px' }}>
-                                    <img src="/images/calling-icon.png" alt="TDS" style={{ width: '28px' }} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentNode.innerHTML = '📄' }} />
+                                    {/* <img src="/images/calling-icon.png" alt="TDS" style={{ width: '28px' }} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentNode.innerHTML = '📄' }} /> */}
+                                    <Call sx={{ width: '28px', height: '28px', color: '#b79237' }} />
                                 </Box>
                                 <Box sx={{ display: 'flex', flexDirection: 'column', borderLeft: '1px solid rgba(205, 205, 205, 0.4)', paddingLeft: '8px', flex: 1 }}>
                                     <Typography sx={{ fontWeight: 600, fontSize: { xs: '0.65rem', sm: '0.7rem' }, color: '#000000', whiteSpace: 'nowrap' }}>Account Mng</Typography>
@@ -352,7 +280,8 @@ export default function NewLandingPage() {
                             }}>
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                                     <Box sx={{ width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                        <img src="/images/tds-icon.png" alt="TDS" style={{ width: '34px' }} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentNode.innerHTML = '📄' }} />
+                                        {/* <img src="/images/tds-icon.png" alt="TDS" style={{ width: '34px' }} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentNode.innerHTML = '📄' }} /> */}
+                                        <SellOutlined sx={{ width: '30px', height: '30px', color: '#b79237' }} />
                                     </Box>
                                     <Box sx={{ display: 'flex', flexDirection: 'column', borderLeft: '1px solid rgba(205, 205, 205, 0.4)', paddingLeft: '10px' }}>
                                         <Typography sx={{ fontWeight: 600, fontSize: '0.75rem', color: '#000000' }}>TDS Number</Typography>
@@ -449,7 +378,7 @@ export default function NewLandingPage() {
                             </div>
                         </div>
                     </Box>
-                    <Box sx={{ marginTop: '14px', display: 'flex', flexDirection: 'row', gap: '16px' }}>
+                    <Box sx={{ marginTop: '14px', display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: '16px' }}>
 
                         {/* <Box sx={{ display: 'flex', flexDirection: 'row', gap: '14px', width: '100%' }}> */}
                         <Box sx={{
@@ -461,11 +390,12 @@ export default function NewLandingPage() {
                             background: '#ffffff',
                             border: '1px solid #b79237',
                             boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
-                            width: '50%'
+                            width: '100%'
                         }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                                 <Box sx={{ width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                    <img src="/images/tds-icon.png" alt="TDS" style={{ width: '34px' }} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentNode.innerHTML = '📄' }} />
+                                    {/* <img src="/images/tds-icon.png" alt="TDS" style={{ width: '34px' }} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentNode.innerHTML = '📄' }} /> */}
+                                    <PaymentsOutlined sx={{ width: '30px', height: '30px', color: '#b79237' }} />
                                 </Box>
                                 <Box sx={{ display: 'flex', flexDirection: 'column', borderLeft: '1px solid rgba(205, 205, 205, 0.4)', paddingLeft: '10px' }}>
                                     <Typography sx={{ fontWeight: 700, fontSize: '0.9rem', color: '#000000' }}>TDS Price (99.50)</Typography>
@@ -489,11 +419,12 @@ export default function NewLandingPage() {
                             background: '#ffffff',
                             border: '1px solid #b79237',
                             boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
-                            width: '50%'
+                            width: '100%'
                         }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                                 <Box sx={{ width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                    <img src="/images/tds-icon.png" alt="TDS" style={{ width: '34px' }} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentNode.innerHTML = '📄' }} />
+                                    {/* <img src="/images/tds-icon.png" alt="TDS" style={{ width: '34px' }} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentNode.innerHTML = '📄' }} /> */}
+                                    <PaymentsOutlined sx={{ width: '30px', height: '30px', color: '#b79237' }} />
                                 </Box>
                                 <Box sx={{ display: 'flex', flexDirection: 'column', borderLeft: '1px solid rgba(205, 205, 205, 0.4)', paddingLeft: '10px' }}>
                                     <Typography sx={{ fontWeight: 700, fontSize: '0.9rem', color: '#000000' }}>TDS Price (99.50)</Typography>
@@ -524,7 +455,8 @@ export default function NewLandingPage() {
                             flex: 1,
                         }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingRight: '10px' }}>
-                                <img src="/images/calling-icon.png" alt="TDS" style={{ width: '28px' }} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentNode.innerHTML = '📄' }} />
+                                {/* <img src="/images/calling-icon.png" alt="TDS" style={{ width: '28px' }} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentNode.innerHTML = '📄' }} /> */}
+                                <Call sx={{ width: '28px', height: '28px', color: '#b79237' }} />
                             </Box>
                             <Box sx={{ display: 'flex', flexDirection: 'column', borderLeft: '1px solid rgba(205, 205, 205, 0.4)', paddingLeft: '8px', flex: 1 }}>
                                 <Typography sx={{ fontWeight: 600, fontSize: { xs: '0.65rem', sm: '0.7rem' }, color: '#000000', whiteSpace: 'nowrap' }}>Contact</Typography>
@@ -542,7 +474,8 @@ export default function NewLandingPage() {
                             flex: 1,
                         }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingRight: '10px' }}>
-                                <img src="/images/calling-icon.png" alt="TDS" style={{ width: '28px' }} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentNode.innerHTML = '📄' }} />
+                                {/* <img src="/images/calling-icon.png" alt="TDS" style={{ width: '28px' }} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentNode.innerHTML = '📄' }} /> */}
+                                <Call sx={{ width: '28px', height: '28px', color: '#b79237' }} />
                             </Box>
                             <Box sx={{ display: 'flex', flexDirection: 'column', borderLeft: '1px solid rgba(205, 205, 205, 0.4)', paddingLeft: '8px', flex: 1 }}>
                                 <Typography sx={{ fontWeight: 600, fontSize: { xs: '0.65rem', sm: '0.7rem' }, color: '#000000', whiteSpace: 'nowrap' }}>Account Mng</Typography>
@@ -563,7 +496,8 @@ export default function NewLandingPage() {
                     }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                             <Box sx={{ width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                <img src="/images/tds-icon.png" alt="TDS" style={{ width: '34px' }} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentNode.innerHTML = '📄' }} />
+                                {/* <img src="/images/tds-icon.png" alt="TDS" style={{ width: '34px' }} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentNode.innerHTML = '📄' }} /> */}
+                                <SellOutlined sx={{ width: '30px', height: '30px', color: '#b79237' }} />
                             </Box>
                             <Box sx={{ display: 'flex', flexDirection: 'column', borderLeft: '1px solid rgba(205, 205, 205, 0.4)', paddingLeft: '10px' }}>
                                 <Typography sx={{ fontWeight: 600, fontSize: '0.75rem', color: '#000000' }}>TDS Number</Typography>
@@ -581,7 +515,7 @@ export default function NewLandingPage() {
             <section className="about-section">
                 <Container>
                     <Grid container alignItems="center" spacing={6}>
-                        <Grid item xs={12} md={6}>
+                        <Grid item xs={12} md={8}>
                             <Typography className="about-subtitle">About Us</Typography>
                             <Typography className="about-title">Diamond Bullion Gold House</Typography>
 
@@ -598,8 +532,8 @@ export default function NewLandingPage() {
                                 craftsmanship and uncompromising quality standards.
                             </Typography>
                         </Grid>
-                        <Grid item xs={12} md={6}>
-                            <Box className="about-image-wrapper" style={{ margin: "0px", justifySelf: 'end' }}>
+                        <Grid item xs={12} md={4}>
+                            <Box className="about-image-wrapper" style={{ margin: "0px", justifySelf: 'center' }}>
                                 <img src={HeroLogoImg} alt="Hero Logo" style={{ maxWidth: '100%', maxHeight: '100%' }} />
                             </Box>
                         </Grid>
@@ -625,49 +559,7 @@ export default function NewLandingPage() {
             </section>
 
             {/* Footer Section */}
-            <footer className="landing-footer">
-                <Container>
-                    <Grid container spacing={4}>
-                        <Grid item xs={12} md={4}>
-                            <img src={LongLogoImg} alt="Diamond Bullion" className="footer-logo" />
-                            <Typography className="footer-text" >
-                                1st Floor, 6AB, Circular Rd, opposite Print N Gift, near Gupta Hospital, Beauty Avenue,
-                                Amritsar, Punjab 143001
-                            </Typography>
-                            <Box className="footer-socials" sx={{ display: 'flex', gap: '20px', mt: '20px' }}>
-                                {/* Using simple text characters for social icons as placeholders */}
-                                <span style={{ fontSize: '32px', cursor: 'pointer' }}><b>f</b></span>
-                                <span style={{ fontSize: '32px', cursor: 'pointer' }}><b>𝕏</b></span>
-                                <span style={{ fontSize: '32px', cursor: 'pointer' }}><b>▶</b></span>
-                                <span style={{ fontSize: '32px', cursor: 'pointer' }}><b>in</b></span>
-                            </Box>
-                        </Grid>
-
-                        <Grid item xs={12} md={4}>
-                            <Typography className="footer-col-title">QUICK LINKS</Typography>
-                            <ul className="footer-links">
-                                <li><a href="#" onClick={scrollToTop}>Live Rates</a></li>
-                                <li><a href="#" onClick={scrollToTop}>Contact Us</a></li>
-                                <li><a href="#" onClick={scrollToTop}>Bank Details</a></li>
-                                <li><a href="#" onClick={scrollToTop}>Download</a></li>
-                                <li><a href="#" onClick={scrollToTop}>About Us</a></li>
-                                <li><a href="#" onClick={scrollToTop}>Booking Desk</a></li>
-                            </ul>
-                        </Grid>
-
-                        <Grid item xs={12} md={4} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', alignSelf: 'center' }}>
-                            <Box className="contact-btn-box" sx={{ width: '300px!important', fontSize: '18px!important' }}>
-                                CONTACT US
-                            </Box>
-                            <Typography className="contact-number" sx={{ fontSize: '36px!important' }}>+91-9876543210</Typography>
-                        </Grid>
-                    </Grid>
-
-                    <Box className="footer-bottom">
-                        ©2026 Diamond Bullions Gold House
-                    </Box>
-                </Container>
-            </footer>
+            <LandingFooter />
         </React.Fragment>
     );
 }

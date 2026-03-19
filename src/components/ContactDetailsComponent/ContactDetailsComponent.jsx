@@ -125,7 +125,7 @@ export default function ContactDetailsComponent({ contactDetails }) {
                 }
               }
             />{" "}
-            <TextField
+            {/* <TextField
               margin="normal"
               InputProps={{
                 startAdornment: (
@@ -159,7 +159,7 @@ export default function ContactDetailsComponent({ contactDetails }) {
                   },
                 }
               }
-            />
+            /> */}
           </Box>
           <Box sx={{ width: "100%" }}>
             <TextField

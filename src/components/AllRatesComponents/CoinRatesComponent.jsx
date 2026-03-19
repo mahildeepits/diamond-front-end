@@ -46,6 +46,7 @@ export default function CoinRatesComponent() {
         disparity: "",
         metal_type: "Gold",
         image: null,
+        quantities: "", // Added for selectable quantities
     });
 
     const handleOpen = (coin = null) => {
@@ -57,6 +58,7 @@ export default function CoinRatesComponent() {
                 disparity: coin.disparity || coin.amount || "",
                 metal_type: coin.metal_type || "Gold",
                 image: null,
+                quantities: Array.isArray(coin.quantities) ? coin.quantities.join(", ") : (coin.quantities || ""),
             });
         } else {
             setEditingCoin(null);
@@ -66,6 +68,7 @@ export default function CoinRatesComponent() {
                 disparity: "",
                 metal_type: "Gold",
                 image: null,
+                quantities: "",
             });
         }
         setOpen(true);
@@ -85,6 +88,7 @@ export default function CoinRatesComponent() {
         form.append("grams", formData.grams);
         form.append("disparity", formData.disparity);
         form.append("metal_type", formData.metal_type);
+        form.append("quantities", formData.quantities); // Send as string, backend handles conversion
         if (formData.image instanceof File) {
             form.append("image", formData.image);
         }
@@ -250,6 +254,16 @@ export default function CoinRatesComponent() {
                                     value={formData.disparity}
                                     onChange={(e) => setFormData({ ...formData, disparity: e.target.value })}
                                     required
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    fullWidth
+                                    label="Allowed Quantities (comma separated, e.g. 1,2,5,10)"
+                                    value={formData.quantities}
+                                    onChange={(e) => setFormData({ ...formData, quantities: e.target.value })}
+                                    helperText="Users can only select from these quantities when booking this coin."
+                                    variant="outlined"
                                 />
                             </Grid>
                             <Grid item xs={12}>
