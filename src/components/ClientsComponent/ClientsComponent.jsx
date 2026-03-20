@@ -112,6 +112,21 @@ export default function ClientsComponent({ isSubAdmin }) {
       }
     },
     {
+      field: "retail_gold_limit",
+      headerName: "Retail Gold Limit",
+      width: 150,
+      flex: 1,
+      minWidth: 120,
+      renderCell: (params) => {
+        return (
+          <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%', py: 1 }}>
+            <Typography sx={{ fontSize: '13px', fontWeight: 600 }}>Limit: {params.row.retail_gold_limit || 0}</Typography>
+            <Typography sx={{ fontSize: '12px', color: 'text.secondary' }}>Balance: {params.row.retail_gold_balance ?? 0}</Typography>
+          </Box>
+        );
+      }
+    },
+    {
       field: "created_at",
       headerName: "Created at",
       width: 150,

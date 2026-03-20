@@ -20,6 +20,8 @@ export const userForm = (edit = false) => {
     opted_for: Yup.string().required("Atleast one TDS/TCS should be selected"),
     client_id: Yup.number().max(9999999999, "Client ID should not be greater than 10 digits").min(100000, "Client ID should not be less than 6 digits").required("Client ID should not be empty"),
     limit: Yup.number().min(1).max(100000000).required("Limit should not be empty"),
+    silver_limit: Yup.number().min(0).max(100000000),
+    retail_gold_limit: Yup.number().min(0).max(100000000),
   };
 
   if(edit) validationSchema.password = Yup.string().min(6).max(20);

@@ -45,6 +45,7 @@ export default function AddClientComponent() {
 		is_admin: 1,
 		limit: "",
 		silver_limit: "",
+		retail_gold_limit: "",
 		client_id: "",
 	};
 	const {
@@ -93,6 +94,7 @@ export default function AddClientComponent() {
 				opted_for: 'TDS',
 				limit: userData.limit,
 				silver_limit: userData.silver_limit || "",
+				retail_gold_limit: userData.retail_gold_limit || "",
 				client_id: userData.client_id,
 			});
 		}
@@ -335,6 +337,23 @@ export default function AddClientComponent() {
 						label="Silver Limit"
 						onBlur={handleBlur}
 						placeholder="Enter silver limit"
+						fullWidth
+						sx={{ mt: 3 }}
+						InputProps={{
+							startAdornment: (
+								<InputAdornment position="start">
+									<Timeline color="primary" />
+								</InputAdornment>
+							),
+						}}
+					/>
+					<TextField
+						onChange={handleChange}
+						value={values.retail_gold_limit}
+						name="retail_gold_limit"
+						label="Retail Gold Limit"
+						onBlur={handleBlur}
+						placeholder="Enter retail gold limit"
 						fullWidth
 						sx={{ mt: 3 }}
 						InputProps={{

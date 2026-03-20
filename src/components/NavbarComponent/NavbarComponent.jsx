@@ -171,6 +171,12 @@ export default function NavbarComponent() {
                         ₹{userDetails.is_subadmin ? userDetails.subadmin_silver_limit : userDetails.silver_balance}
                       </Typography>
                     </Box>
+                    <Box sx={{ display: 'flex', gap: 1, mt: 0.5 }}>
+                      <Box sx={{ bgcolor: '#ff9933', px: 1, py: 0.2, borderRadius: '4px', color: '#000', fontSize: '11px', fontWeight: 'bold', textTransform: 'uppercase' }}>Retail</Box>
+                      <Typography sx={{ color: 'primary.main', fontSize: '13px', fontWeight: 600 }}>
+                        ₹{userDetails.is_subadmin ? userDetails.subadmin_retail_gold_limit : userDetails.retail_gold_balance}
+                      </Typography>
+                    </Box>
                   </Box>
                 </Box>
               )}

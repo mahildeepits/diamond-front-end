@@ -63,6 +63,7 @@ export default function EditBookingComponent() {
   const [updateBooking, { isLoading: updatingBooking }] = useUpdateBookingMutation()
   const [currentGoldRate, setCurrentGoldRate] = useState(0)
   const [currentSilverRate, setCurrentSilverRate] = useState(0)
+  const [currentRetailGoldRate, setCurrentRetailGoldRate] = useState(0)
   const [selectedClient, setSelectedClient] = useState(null)
 
   const [ranges, setRanges] = useState([]);
@@ -83,6 +84,9 @@ export default function EditBookingComponent() {
       if (metalType === 'gold') {
         setBalance(targetUser.balance)
         setLimit(targetUser.limit)
+      } else if (metalType === 'retail_gold') {
+        setBalance(targetUser.retail_gold_balance)
+        setLimit(targetUser.retail_gold_limit)
       } else {
         setBalance(targetUser.silver_balance)
         setLimit(targetUser.silver_limit)
@@ -111,14 +115,14 @@ export default function EditBookingComponent() {
 
         let currentCharges = 0
         for (const range of chargesData) {
-          if ((!range.type || range.type === metalType) && i >= range.from_day && i <= range.to_day) {
-            currentCharges = metalType === 'gold' ? range.charges / 10 : range.charges / 1000
+          if ((!range.type || range.type === (metalType === 'retail_gold' ? 'gold' : metalType)) && i >= range.from_day && i <= range.to_day) {
+            currentCharges = (metalType === 'gold' || metalType === 'retail_gold') ? range.charges / 10 : range.charges / 1000
             break
           }
         }
 
         deliveryDatesArray.push({
-          label: `${formattedDate} (₹${(metalType === 'gold' ? currentCharges * 1 : currentCharges * 1000).toFixed(0)}/${metalType === 'gold' ? 'gm' : 'kg'} Extra Charges)`,
+          label: `${formattedDate} (₹${((metalType === 'gold' || metalType === 'retail_gold') ? currentCharges * 1 : currentCharges * 1000).toFixed(0)}/${(metalType === 'gold' || metalType === 'retail_gold') ? 'gm' : 'kg'} Extra Charges)`,
           value: formattedDate,
           charges: currentCharges,
         })
@@ -139,14 +143,9 @@ export default function EditBookingComponent() {
       const apiRes = await LiveRateApi.fetch()
       if (apiRes) {
         setCurrentGoldRate(apiRes.includingTds / 10)
-        // Silver TDS rate calculation if not directly in apiRes
-        // Assuming a standard calculation or fetching if available
+        setCurrentRetailGoldRate(apiRes.retailGoldRate / 10)
         const sRate = apiRes.silverPrice || apiRes.silverRate || 0
-        const sTds = apiRes.tds || 0 // Using same TDS diff for now as placeholder or if available
         setCurrentSilverRate((apiRes.silverCostHigh || sRate) / 1000)
-
-        // Better: Use the calculated silverCostTds if FrontEndLiveRatesComponent logic is available
-        // For now, aligning with the rate returned by the specific silver fetch or socket
       }
     }, 1000)
     return () => {
@@ -185,8 +184,8 @@ export default function EditBookingComponent() {
       // Initialize form values
       formik.setValues({
         client_id: booking.client_id || "",
-        rate: booking.rate || (metalType === 'gold' ? currentGoldRate : currentSilverRate),
-        quantity: metalType === 'silver' ? (booking.quantity / 1000) : (booking.quantity || 0),
+        rate: booking.rate || (metalType === 'gold' ? currentGoldRate : (metalType === 'retail_gold' ? currentRetailGoldRate : currentSilverRate)),
+        quantity: (metalType === 'silver') ? (booking.quantity / 1000) : (booking.quantity || 0),
         total_amount: booking.total_amount || 0,
         byType: booking.quantity_or_amount === 0 ? "quantity" : "amount",
         remarks: booking.remarks || "",
@@ -201,7 +200,7 @@ export default function EditBookingComponent() {
   const formik = useFormik({
     initialValues: {
       client_id: bookingData?.data?.client_id || "",
-      rate: bookingData?.data?.rate || (metalType === 'gold' ? currentGoldRate : currentSilverRate),
+      rate: bookingData?.data?.rate || (metalType === 'gold' ? currentGoldRate : (metalType === 'retail_gold' ? currentRetailGoldRate : currentSilverRate)),
       quantity: bookingData?.data?.quantity || 0,
       total_amount: bookingData?.data?.total_amount || 0,
       byType: bookingData?.data?.quantity_or_amount === 0 ? "quantity" : "amount",
@@ -224,7 +223,7 @@ export default function EditBookingComponent() {
         values: {
           client_id: activeUser.is_admin == 0 ? activeUser.id : values.client_id,
           quantity_or_amount: values.byType == "quantity" ? 0 : 1,
-          rate: values.rateOption === "current" ? (metalType === 'gold' ? currentGoldRate : currentSilverRate) : (metalType === 'gold' ? values.rate / 10 : values.rate / 1000),
+          rate: values.rateOption === "current" ? (metalType === 'gold' ? currentGoldRate : (metalType === 'retail_gold' ? currentRetailGoldRate : currentSilverRate)) : ((metalType === 'gold' || metalType === 'retail_gold') ? values.rate / 10 : values.rate / 1000),
           remarks: values.remarks,
           created_by: activeUser.is_admin == 1 ? "admin" : activeUser.id,
           delivery_date: selectedDate,
@@ -348,8 +347,8 @@ export default function EditBookingComponent() {
             </Grid2>
             <Grid2 item size={{ xs: 12, md: activeUser.is_admin == 1 ? 6 : 12 }}>
               <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", my: 1 }}>
-                <Typography>{metalType === 'gold' ? 'Gold ' : 'Silver '}Balance</Typography>
-                <Typography sx={{ ml: 2, color: "text.secondary" }}>Total {metalType === 'gold' ? 'Gold ' : 'Silver '}Limit: {limit}</Typography>
+                <Typography>{(metalType === 'gold' || metalType === 'retail_gold') ? (metalType === 'retail_gold' ? 'Retail Gold ' : 'Gold ') : 'Silver '}Balance</Typography>
+                <Typography sx={{ ml: 2, color: "text.secondary" }}>Total {(metalType === 'gold' || metalType === 'retail_gold') ? (metalType === 'retail_gold' ? 'Retail Gold ' : 'Gold ') : 'Silver '}Limit: {limit}</Typography>
               </Box>
               <TextField disabled value={balance} fullWidth />
             </Grid2>
@@ -373,7 +372,7 @@ export default function EditBookingComponent() {
               )}
               {activeUser.is_admin == 1 ? (
                 formik.values.rateOption === "current" ? (
-                  <TextField disabled sx={{ mt: 1 }} value={metalType === 'gold' ? currentGoldRate * 10 : currentSilverRate * 1000} fullWidth name="rate" />
+                  <TextField disabled sx={{ mt: 1 }} value={metalType === 'gold' ? currentGoldRate * 10 : (metalType === 'retail_gold' ? currentRetailGoldRate * 10 : currentSilverRate * 1000)} fullWidth name="rate" />
                 ) : (
                   <TextField
                     disabled={isSubAdmin}
@@ -394,7 +393,7 @@ export default function EditBookingComponent() {
                   placeholder="Enter rate"
                   type="number"
                   name="rate"
-                  value={metalType === 'gold' ? currentGoldRate : currentSilverRate}
+                  value={metalType === 'gold' ? currentGoldRate : (metalType === 'retail_gold' ? currentRetailGoldRate : currentSilverRate)}
                   fullWidth
                   sx={{ mt: 1 }}
                   onChange={formik.handleChange}
@@ -419,17 +418,17 @@ export default function EditBookingComponent() {
                 <Autocomplete
                   disabled={isSubAdmin}
                   sx={{ mt: 1 }}
-                  options={metalType === 'gold'
+                  options={(metalType === 'gold' || metalType === 'retail_gold')
                     ? Array.from({ length: 49 }, (_, i) => 20 + i * 10)
                     : [5, 10, 15, 20, 25, 30]
                   }
-                  getOptionLabel={(option) => `${option} ${metalType === 'gold' ? 'gms' : 'kg'}`}
+                  getOptionLabel={(option) => `${option} ${(metalType === 'gold' || metalType === 'retail_gold') ? 'gms' : 'kg'}`}
                   value={formik.values.quantity || null}
                   onChange={(_, value) => formik.setFieldValue("quantity", value)}
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      placeholder={`Select ${metalType === 'gold' ? 'Grams' : 'KG'}`}
+                      placeholder={`Select ${(metalType === 'gold' || metalType === 'retail_gold') ? 'Grams' : 'KG'}`}
                       error={formik.touched.quantity && Boolean(formik.errors.quantity)}
                       helperText={formik.touched.quantity && formik.errors.quantity}
                     />

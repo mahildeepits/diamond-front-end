@@ -42,9 +42,11 @@ const LiveRateApi = {
             const nextMonthIncludingTcs = rate + nextMonthTcs;
             const nextMonthIncludingTds = rate + nextMonthTds;
             const nextMonthRateStatus = (diffRates?.data?.data[0]?.next_month_rate_status ?? 0);
-            // console.log(diffRates?.data?.data[0]?.including_tcs,tcs,'-------',diffRates?.data?.data[0]?.including_tds,tds);
+            const retailGoldTds = parseFloat(diffRates?.data?.data[0]?.including_retail_gold_tds ?? 0);
+            const retailGoldRate = rate + retailGoldTds;
+            const retailGoldRateStatus = (diffRates?.data?.data[0]?.retail_gold_rate_status ?? 0);
 
-            return { rate, usd, cost, includingTcs, includingTds, nextMonthIncludingTcs, nextMonthIncludingTds, nextMonthRateStatus, tcs, tds, nextMonthTcs, nextMonthTds, costHigh, costLow, rateHigh, rateLow, silverCostHigh, silverCostLow, silverRateHigh, silverRateLow };
+            return { rate, usd, cost, includingTcs, includingTds, nextMonthIncludingTcs, nextMonthIncludingTds, nextMonthRateStatus, tcs, tds, nextMonthTcs, nextMonthTds, costHigh, costLow, rateHigh, rateLow, silverCostHigh, silverCostLow, silverRateHigh, silverRateLow, retailGoldRate, retailGoldRateStatus };
         } catch (error) { console.log(error) }
     }
 }
