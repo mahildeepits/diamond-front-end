@@ -14,7 +14,7 @@ export default function HomePage() {
   const breadcrumbs = [<Typography key={1}>Dashboard</Typography>];
 
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="xl" sx={{ py: 2, px: 0 }}>
       <Box sx={{ py: 1 }}>
         <BreadcrumbsComponent breadcrumbs={breadcrumbs} />
       </Box>

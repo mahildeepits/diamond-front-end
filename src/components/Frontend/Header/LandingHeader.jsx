@@ -5,10 +5,13 @@ import { Login, TrendingUpOutlined, InfoOutlined, AccountBalanceOutlined, PhoneO
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoImg from '../../../assets/images/dbh.png';
 import '../NewLandingPage/LandingStyle.css';
+import { useFetchAdminContactDetailsQuery } from '../../../store/apis/AdminAPI';
 
 export default function LandingHeader() {
     const [mobileOpen, setMobileOpen] = useState(false);
     const navigate = useNavigate();
+    const { data: contactData } = useFetchAdminContactDetailsQuery();
+    const contact = contactData?.data || {};
 
     return (
         <header className="landing-header">
@@ -43,8 +46,8 @@ export default function LandingHeader() {
 
                     <Grid item xs={12} md={7} sx={{ display: { xs: 'none', md: 'flex' }, gap: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
                         <NavLink to="/download" className={({ isActive }) => (isActive ? "landing-nav-link active" : "landing-nav-link")}>Downloads</NavLink>
-                        <a href="tel:+91985625486" className="landing-phone-btn">
-                            <Call style={{ width: '16px', marginRight: '5px' }} /> +91-985625486
+                        <a href={`tel:+91${contact.first_contact_number || '+91985625486'}`} className="landing-phone-btn">
+                            <Call style={{ width: '16px', marginRight: '5px' }} /> +91 {contact.first_contact_number || '+91-985625486'}
                         </a>
                         <NavLink to="/login" className={({ isActive }) => (isActive ? "landing-nav-link active" : "landing-nav-link")} ><Login sx={{ fontSize: '20px', color: '#fdf6d4' }} /></NavLink>
                     </Grid>

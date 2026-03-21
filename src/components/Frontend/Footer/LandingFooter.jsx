@@ -3,9 +3,12 @@ import { Box, Container, Grid, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import LongLogoImg from '../../../assets/images/logo-hori.png';
 import '../NewLandingPage/LandingStyle.css';
+import { useFetchAdminContactDetailsQuery } from '../../../store/apis/AdminAPI';
 
 export default function LandingFooter() {
     const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+    const { data: contactData } = useFetchAdminContactDetailsQuery();
+    const contact = contactData?.data || {};
 
     return (
         <footer className="landing-footer">
@@ -14,8 +17,7 @@ export default function LandingFooter() {
                     <Grid item xs={12} md={4}>
                         <img src={LongLogoImg} alt="Diamond Bullion" className="footer-logo" />
                         <Typography className="footer-text" >
-                            1st Floor, 6AB, Circular Rd, opposite Print N Gift, near Gupta Hospital, Beauty Avenue,
-                            Amritsar, Punjab 143001
+                            {contact.address || 'Amritsar, Punjab 143001'}
                         </Typography>
                         <Box className="footer-socials" sx={{ display: 'flex', gap: '20px', mt: '20px' }}>
                             <span style={{ fontSize: '32px', cursor: 'pointer' }}><b>f</b></span>
@@ -40,7 +42,7 @@ export default function LandingFooter() {
                         <Box className="contact-btn-box" sx={{ width: '300px!important', fontSize: '18px!important' }}>
                             CONTACT US
                         </Box>
-                        <Typography className="contact-number" sx={{ fontSize: '36px!important' }}>+91-9876543210</Typography>
+                        <Typography className="contact-number" sx={{ fontSize: '36px!important' }}>+91 {contact.first_contact_number || '+91-9876543210'}</Typography>
                     </Grid>
                 </Grid>
 

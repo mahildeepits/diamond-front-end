@@ -33,6 +33,8 @@ export default function NewLandingPage() {
     const [silverCost, setSilverCost] = useState({ previous: 0, current: 0 });
     const [goldCostTds, setGoldCostTds] = useState({ previous: 0, current: 0 });
     const [silverCostTds, setSilverCostTds] = useState({ previous: 0, current: 0 });
+    const [retailGoldRate, setRetailGoldRate] = useState({ previous: 0, current: 0 });
+    const [retailGoldRateStatus, setRetailGoldRateStatus] = useState(0);
 
     const [goldRateHigh, setGoldRateHigh] = useState(0);
     const [goldRateLow, setGoldRateLow] = useState(0);
@@ -44,6 +46,7 @@ export default function NewLandingPage() {
 
     const [goldDirection, setGoldDirection] = useState('up');
     const [silverDirection, setSilverDirection] = useState('up');
+    const [contactInfo, setContactInfo] = useState({ contact: '9876543210', accountMng: '9876543210' });
 
     // Dummy values for spots if not available yet from API
     const dummySpots = {
@@ -67,6 +70,12 @@ export default function NewLandingPage() {
                 setGoldCost({ previous: apiRes.rate, current: apiRes.rate });
                 if (apiRes.includingTds) setGoldCostTds({ previous: apiRes.includingTds, current: apiRes.includingTds });
 
+                if (apiRes.silverCost) setSilverPrice({ previous: apiRes.silverCost, current: apiRes.silverCost });
+                if (apiRes.silverRate) setSilverCost({ previous: apiRes.silverRate, current: apiRes.silverRate });
+                if (apiRes.includingSilverTds) setSilverCostTds({ previous: apiRes.includingSilverTds, current: apiRes.includingSilverTds });
+                if (apiRes.retailGoldRate) setRetailGoldRate({ previous: apiRes.retailGoldRate, current: apiRes.retailGoldRate });
+                if (apiRes.retailGoldRateStatus !== undefined) setRetailGoldRateStatus(apiRes.retailGoldRateStatus);
+
                 setGoldRateHigh(apiRes.rateHigh);
                 setGoldRateLow(apiRes.rateLow);
                 setGoldCostHigh(apiRes.costHigh);
@@ -74,6 +83,13 @@ export default function NewLandingPage() {
 
                 if (apiRes.silverCostHigh) setSilverSpotHigh(apiRes.silverCostHigh);
                 if (apiRes.silverCostLow) setSilverSpotLow(apiRes.silverCostLow);
+
+                if (apiRes.contact) {
+                    setContactInfo({
+                        contact: apiRes.contact.first_contact_number || '9876543210',
+                        accountMng: apiRes.contact.first_booking_number || '9876543210'
+                    });
+                }
             }
         })();
 
@@ -81,6 +97,12 @@ export default function NewLandingPage() {
         socket.on('bookingTimeChanged', (res) => {
             if (res?.manage_booking?.current_rate_status !== undefined) {
                 setPriceVisibility(res.manage_booking.current_rate_status);
+            }
+        });
+
+        socket.on('rateDifference', (res) => {
+            if (res.rate_difference && res.rate_difference.retail_gold_rate_status !== undefined) {
+                setRetailGoldRateStatus(res.rate_difference.retail_gold_rate_status);
             }
         });
 
@@ -94,6 +116,7 @@ export default function NewLandingPage() {
                 if (res.rates.silverCost) setSilverPrice(prev => ({ previous: prev.current, current: parseFloat(res.rates.silverCost) }));
                 if (res.rates.silverRate) setSilverCost(prev => ({ previous: prev.current, current: parseFloat(res.rates.silverRate) }));
                 if (res.rates.tdsSilverRate) setSilverCostTds(prev => ({ previous: prev.current, current: parseFloat(res.rates.tdsSilverRate) }));
+                if (res.rates.retailGoldRate) setRetailGoldRate(prev => ({ previous: prev.current, current: parseFloat(res.rates.retailGoldRate) }));
             }
         });
 
@@ -230,7 +253,7 @@ export default function NewLandingPage() {
                                 <Typography sx={{ fontSize: '20px', fontWeight: 400 }}>&gt;</Typography>
                             </Box> */}
                             {/* Gold TDS Card */}
-                            <Box sx={{
+                            {/* <Box sx={{
                                 display: 'flex',
                                 alignItems: 'center',
                                 padding: '12px 10px',
@@ -241,15 +264,14 @@ export default function NewLandingPage() {
                                 flex: 1,
                             }}>
                                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingRight: '10px' }}>
-                                    {/* <img src="/images/calling-icon.png" alt="TDS" style={{ width: '28px' }} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentNode.innerHTML = '📄' }} /> */}
                                     <Call sx={{ width: '28px', height: '28px', color: '#b79237' }} />
                                 </Box>
                                 <Box sx={{ display: 'flex', flexDirection: 'column', borderLeft: '1px solid rgba(205, 205, 205, 0.4)', paddingLeft: '8px', flex: 1 }}>
                                     <Typography sx={{ fontWeight: 600, fontSize: { xs: '0.65rem', sm: '0.7rem' }, color: '#000000', whiteSpace: 'nowrap' }}>Contact</Typography>
                                     <Typography sx={{ fontSize: { xs: '0.8rem', sm: '0.9rem' }, color: '#000000', fontWeight: 700 }}>9876543210</Typography>
                                 </Box>
-                            </Box>
-                            <Box sx={{
+                            </Box> */}
+                            {/* <Box sx={{
                                 display: 'flex',
                                 alignItems: 'center',
                                 padding: '12px 10px',
@@ -260,15 +282,14 @@ export default function NewLandingPage() {
                                 flex: 1,
                             }}>
                                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingRight: '10px' }}>
-                                    {/* <img src="/images/calling-icon.png" alt="TDS" style={{ width: '28px' }} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentNode.innerHTML = '📄' }} /> */}
                                     <Call sx={{ width: '28px', height: '28px', color: '#b79237' }} />
                                 </Box>
                                 <Box sx={{ display: 'flex', flexDirection: 'column', borderLeft: '1px solid rgba(205, 205, 205, 0.4)', paddingLeft: '8px', flex: 1 }}>
                                     <Typography sx={{ fontWeight: 600, fontSize: { xs: '0.65rem', sm: '0.7rem' }, color: '#000000', whiteSpace: 'nowrap' }}>Account Mng</Typography>
                                     <Typography sx={{ fontSize: { xs: '0.8rem', sm: '0.9rem' }, color: '#000000', fontWeight: 700 }}>9876543210</Typography>
                                 </Box>
-                            </Box>
-                            <Box sx={{
+                            </Box> */}
+                            {/* <Box sx={{
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'space-between',
@@ -280,7 +301,6 @@ export default function NewLandingPage() {
                             }}>
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                                     <Box sx={{ width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                        {/* <img src="/images/tds-icon.png" alt="TDS" style={{ width: '34px' }} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentNode.innerHTML = '📄' }} /> */}
                                         <SellOutlined sx={{ width: '30px', height: '30px', color: '#b79237' }} />
                                     </Box>
                                     <Box sx={{ display: 'flex', flexDirection: 'column', borderLeft: '1px solid rgba(205, 205, 205, 0.4)', paddingLeft: '10px' }}>
@@ -291,8 +311,98 @@ export default function NewLandingPage() {
                                 <Box>
                                     <ContentCopyOutlined sx={{ cursor: 'pointer', color: '#b79237' }} onClick={() => { navigator.clipboard.writeText('999988888777774'); toast.success('TDS Number copied to clipboard') }} />
                                 </Box>
+                            </Box> */}
+                            <Box sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                padding: '18px',
+                                borderRadius: '8px',
+                                background: '#ffffff',
+                                border: '1px solid #b79237',
+                                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
+                                width: '100%'
+                            }}>
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                    <Box sx={{ width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        {/* <img src="/images/tds-icon.png" alt="TDS" style={{ width: '34px' }} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentNode.innerHTML = '📄' }} /> */}
+                                        <PaymentsOutlined sx={{ width: '30px', height: '30px', color: '#b79237' }} />
+                                    </Box>
+                                    <Box sx={{ display: 'flex', flexDirection: 'column', borderLeft: '1px solid rgba(205, 205, 205, 0.4)', paddingLeft: '10px' }}>
+                                        <Typography sx={{ fontWeight: 700, fontSize: '0.9rem', color: '#000000' }}>TDS Price (99.50)</Typography>
+                                        <Typography sx={{ fontSize: '0.75rem', color: '#000000', fontWeight: 700 }}>Gold Cost</Typography>
+                                    </Box>
+                                </Box>
+                                <Box>
+                                    <Typography sx={{ fontSize: '1.2rem', fontWeight: 800, color: '#000000' }}>
+                                        <PriceDisplay prefix="₹" prev={goldCostTds.previous} curr={goldCostTds.current} visible={priceVisibility} flashBg />
+                                    </Typography>
+                                </Box>
                             </Box>
 
+                            {/* Silver TDS Card */}
+                            <Box sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                padding: '18px',
+                                borderRadius: '8px',
+                                background: '#ffffff',
+                                border: '1px solid #b79237',
+                                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
+                                width: '100%'
+                            }}>
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                    <Box sx={{ width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        {/* <img src="/images/tds-icon.png" alt="TDS" style={{ width: '34px' }} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentNode.innerHTML = '📄' }} /> */}
+                                        <PaymentsOutlined sx={{ width: '30px', height: '30px', color: '#b79237' }} />
+                                    </Box>
+                                    <Box sx={{ display: 'flex', flexDirection: 'column', borderLeft: '1px solid rgba(205, 205, 205, 0.4)', paddingLeft: '10px' }}>
+                                        <Typography sx={{ fontWeight: 700, fontSize: '0.9rem', color: '#000000' }}>TDS Price (99.50)</Typography>
+                                        <Typography sx={{ fontSize: '0.75rem', color: '#000000', fontWeight: 700 }}>Silver Cost</Typography>
+                                    </Box>
+                                </Box>
+                                <Box>
+                                    <Typography sx={{
+                                        fontSize: '1.2rem',
+                                        fontWeight: 800,
+                                        color: '#000000',
+                                    }}>
+                                        <PriceDisplay prefix="₹" prev={silverCostTds.previous} curr={silverCostTds.current} visible={priceVisibility} flashBg />
+                                    </Typography>
+                                </Box>
+                            </Box>
+                            <Box sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                padding: '18px',
+                                borderRadius: '8px',
+                                background: '#ffffff',
+                                border: '1px solid #b79237',
+                                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
+                                width: '100%'
+                            }}>
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                    <Box sx={{ width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        {/* <img src="/images/tds-icon.png" alt="TDS" style={{ width: '34px' }} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentNode.innerHTML = '📄' }} /> */}
+                                        <PaymentsOutlined sx={{ width: '30px', height: '30px', color: '#b79237' }} />
+                                    </Box>
+                                    <Box sx={{ display: 'flex', flexDirection: 'column', borderLeft: '1px solid rgba(205, 205, 205, 0.4)', paddingLeft: '10px' }}>
+                                        <Typography sx={{ fontWeight: 700, fontSize: '0.9rem', color: '#000000' }}>TDS Price (99.50)</Typography>
+                                        <Typography sx={{ fontSize: '0.75rem', color: '#000000', fontWeight: 700 }}>Retail Gold</Typography>
+                                    </Box>
+                                </Box>
+                                <Box>
+                                    <Typography sx={{
+                                        fontSize: '1.2rem',
+                                        fontWeight: 800,
+                                        color: '#000000',
+                                    }}>
+                                        <PriceDisplay prefix="₹" prev={retailGoldRate.previous} curr={retailGoldRate.current} visible={priceVisibility && retailGoldRateStatus} flashBg />
+                                    </Typography>
+                                </Box>
+                            </Box>
                         </Grid>
 
                     </Grid>
@@ -378,7 +488,7 @@ export default function NewLandingPage() {
                             </div>
                         </div>
                     </Box>
-                    <Box sx={{ marginTop: '14px', display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: '16px' }}>
+                    <Box sx={{ marginTop: '14px', display: { xs: 'flex', md: 'none' }, flexDirection: { xs: 'column', md: 'row' }, gap: '16px' }}>
 
                         {/* <Box sx={{ display: 'flex', flexDirection: 'row', gap: '14px', width: '100%' }}> */}
                         <Box sx={{
@@ -441,29 +551,71 @@ export default function NewLandingPage() {
                                 </Typography>
                             </Box>
                         </Box>
+                        <Box sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            padding: '18px',
+                            borderRadius: '8px',
+                            background: '#ffffff',
+                            border: '1px solid #b79237',
+                            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
+                            width: '100%'
+                        }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                <Box sx={{ width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    {/* <img src="/images/tds-icon.png" alt="TDS" style={{ width: '34px' }} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentNode.innerHTML = '📄' }} /> */}
+                                    <PaymentsOutlined sx={{ width: '30px', height: '30px', color: '#b79237' }} />
+                                </Box>
+                                <Box sx={{ display: 'flex', flexDirection: 'column', borderLeft: '1px solid rgba(205, 205, 205, 0.4)', paddingLeft: '10px' }}>
+                                    <Typography sx={{ fontWeight: 700, fontSize: '0.9rem', color: '#000000' }}>TDS Price (99.50)</Typography>
+                                    <Typography sx={{ fontSize: '0.75rem', color: '#000000', fontWeight: 700 }}>Retail Gold</Typography>
+                                </Box>
+                            </Box>
+                            <Box>
+                                <Typography sx={{
+                                    fontSize: '1.2rem',
+                                    fontWeight: 800,
+                                    color: '#000000',
+                                }}>
+                                    <PriceDisplay prefix="₹" prev={retailGoldRate.previous} curr={retailGoldRate.current} visible={priceVisibility && retailGoldRateStatus} flashBg />
+                                </Typography>
+                            </Box>
+                        </Box>
                         {/* </Box> */}
                     </Box>
                     <Box sx={{ marginTop: '14px', display: { xs: 'flex', md: 'none' }, flexDirection: 'row', gap: '16px' }}>
                         <Box sx={{
                             display: 'flex',
                             alignItems: 'center',
-                            padding: '12px 10px',
+                            justifyContent: 'space-between',
+                            padding: '12px 18px',
                             borderRadius: '8px',
                             background: '#ffffff',
                             border: '1px solid #b79237',
                             boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
-                            flex: 1,
+                            width: '100%'
                         }}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingRight: '10px' }}>
-                                {/* <img src="/images/calling-icon.png" alt="TDS" style={{ width: '28px' }} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentNode.innerHTML = '📄' }} /> */}
-                                <Call sx={{ width: '28px', height: '28px', color: '#b79237' }} />
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                <Box sx={{ width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <Call sx={{ width: '30px', height: '30px', color: '#b79237' }} />
+                                </Box>
+                                <Box sx={{ display: 'flex', flexDirection: 'column', borderLeft: '1px solid rgba(205, 205, 205, 0.4)', paddingLeft: '10px' }}>
+                                    <Typography sx={{ fontWeight: 700, fontSize: '0.9rem', color: '#000000' }}>Contact</Typography>
+                                    <Typography sx={{ fontSize: '1rem', color: '#000000', fontWeight: 700 }}>+91 {contactInfo.contact}</Typography>
+                                </Box>
                             </Box>
-                            <Box sx={{ display: 'flex', flexDirection: 'column', borderLeft: '1px solid rgba(205, 205, 205, 0.4)', paddingLeft: '8px', flex: 1 }}>
-                                <Typography sx={{ fontWeight: 600, fontSize: { xs: '0.65rem', sm: '0.7rem' }, color: '#000000', whiteSpace: 'nowrap' }}>Contact</Typography>
-                                <Typography sx={{ fontSize: { xs: '0.8rem', sm: '0.9rem' }, color: '#000000', fontWeight: 700 }}>9876543210</Typography>
-                            </Box>
+                            {/* <Box>
+                                <Typography sx={{
+                                    fontSize: '1.2rem',
+                                    fontWeight: 800,
+                                    color: '#000000',
+                                }}>
+                                    <PriceDisplay prefix="₹" prev={retailGoldRate.previous} curr={retailGoldRate.current} visible={priceVisibility && retailGoldRateStatus} flashBg />
+                                </Typography>
+                            </Box> */}
                         </Box>
-                        <Box sx={{
+                        {/* <Box sx={{
                             display: 'flex',
                             alignItems: 'center',
                             padding: '12px 10px',
@@ -474,16 +626,33 @@ export default function NewLandingPage() {
                             flex: 1,
                         }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingRight: '10px' }}>
-                                {/* <img src="/images/calling-icon.png" alt="TDS" style={{ width: '28px' }} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentNode.innerHTML = '📄' }} /> */}
+                               
+                            </Box>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', borderLeft: '1px solid rgba(205, 205, 205, 0.4)', paddingLeft: '8px', flex: 1 }}>
+                                <Typography sx={{ fontWeight: 600, fontSize: { xs: '0.65rem', sm: '0.7rem' }, color: '#000000', whiteSpace: 'nowrap' }}>Contact</Typography>
+                                <Typography sx={{ fontSize: { xs: '0.8rem', sm: '0.9rem' }, color: '#000000', fontWeight: 700 }}></Typography>
+                            </Box>
+                        </Box> */}
+                        {/* <Box sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            padding: '12px 10px',
+                            borderRadius: '8px',
+                            background: '#ffffff',
+                            border: '1px solid #b79237',
+                            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
+                            flex: 1,
+                        }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', paddingRight: '10px' }}>
                                 <Call sx={{ width: '28px', height: '28px', color: '#b79237' }} />
                             </Box>
                             <Box sx={{ display: 'flex', flexDirection: 'column', borderLeft: '1px solid rgba(205, 205, 205, 0.4)', paddingLeft: '8px', flex: 1 }}>
                                 <Typography sx={{ fontWeight: 600, fontSize: { xs: '0.65rem', sm: '0.7rem' }, color: '#000000', whiteSpace: 'nowrap' }}>Account Mng</Typography>
                                 <Typography sx={{ fontSize: { xs: '0.8rem', sm: '0.9rem' }, color: '#000000', fontWeight: 700 }}>9876543210</Typography>
                             </Box>
-                        </Box>
+                        </Box> */}
                     </Box>
-                    <Box sx={{
+                    {/* <Box sx={{
                         display: { xs: 'flex', md: 'none' },
                         alignItems: 'center',
                         justifyContent: 'space-between',
@@ -496,7 +665,6 @@ export default function NewLandingPage() {
                     }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                             <Box sx={{ width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                {/* <img src="/images/tds-icon.png" alt="TDS" style={{ width: '34px' }} onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentNode.innerHTML = '📄' }} /> */}
                                 <SellOutlined sx={{ width: '30px', height: '30px', color: '#b79237' }} />
                             </Box>
                             <Box sx={{ display: 'flex', flexDirection: 'column', borderLeft: '1px solid rgba(205, 205, 205, 0.4)', paddingLeft: '10px' }}>
@@ -507,7 +675,7 @@ export default function NewLandingPage() {
                         <Box>
                             <ContentCopyOutlined sx={{ cursor: 'pointer', color: '#b79237' }} onClick={() => { navigator.clipboard.writeText('999988888777774'); toast.success('TDS Number copied to clipboard') }} />
                         </Box>
-                    </Box>
+                    </Box> */}
                 </Container>
             </section>
 

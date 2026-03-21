@@ -6,7 +6,9 @@ const AdminAPI = createApi({
     baseUrl: import.meta.env.VITE_API_KEY,
     prepareHeaders: (headers, { getState }) => {
       const token = getState().CurrentUser?.token;
-      headers.set("Authorization", `Bearer ${token}`);
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
     },
   }),
   endpoints(builder) {
@@ -15,7 +17,7 @@ const AdminAPI = createApi({
         providesTags: ["Admin"],
         query: () => {
           return {
-            url: "/admin/contact/details    ",
+            url: "/admin/contact/details",
             method: "GET",
           };
         },
