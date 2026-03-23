@@ -29,6 +29,8 @@ export default function RateDifferenceFormComponent({ data }) {
     next_month_silver_rate_status: 0,
     including_retail_gold_tds: 0,
     retail_gold_rate_status: 0,
+    gold_coin_disparity: 0,
+    silver_coin_disparity: 0,
   };
   const { values, handleBlur, handleChange, handleSubmit, setValues, setFieldValue } =
     useFormik({
@@ -49,6 +51,8 @@ export default function RateDifferenceFormComponent({ data }) {
         next_month_silver_rate_status: data.next_month_silver_rate_status || 0,
         including_retail_gold_tds: data.including_retail_gold_tds || 0,
         retail_gold_rate_status: data.retail_gold_rate_status || 0,
+        gold_coin_disparity: data.gold_coin_disparity || 0,
+        silver_coin_disparity: data.silver_coin_disparity || 0,
       });
     }
   }, [data, setValues]);
@@ -320,6 +324,60 @@ export default function RateDifferenceFormComponent({ data }) {
           }
         />
       </Box>
+
+      {/* Coin Disparity Start */}
+      <Box sx={{ my: 2 }}>
+        <Typography component={"div"} sx={{ mb: 1 }}>
+          Gold Coin Disparity (per gm)
+        </Typography>
+        <TextField
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <CurrencyRupee color="primary" />
+              </InputAdornment>
+            ),
+          }}
+          name={"gold_coin_disparity"}
+          value={values.gold_coin_disparity || ""}
+          placeholder="Enter gold coin disparity here"
+          onChange={handleChange}
+          onBlur={handleBlur}
+          type="number"
+          disabled={isSubAdmin}
+          fullWidth
+          sx={{
+            "& .MuiOutlinedInput-input": { color: "black" },
+          }}
+        />
+      </Box>
+
+      <Box sx={{ my: 2 }}>
+        <Typography component={"div"} sx={{ mb: 1 }}>
+          Silver Coin Disparity (per gm)
+        </Typography>
+        <TextField
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <CurrencyRupee color="primary" />
+              </InputAdornment>
+            ),
+          }}
+          name={"silver_coin_disparity"}
+          value={values.silver_coin_disparity || ""}
+          placeholder="Enter silver coin disparity here"
+          onChange={handleChange}
+          onBlur={handleBlur}
+          type="number"
+          disabled={isSubAdmin}
+          fullWidth
+          sx={{
+            "& .MuiOutlinedInput-input": { color: "black" },
+          }}
+        />
+      </Box>
+      {/* Coin Disparity End */}
       <Box>
         <LoadingButton
           loading={isLoading}

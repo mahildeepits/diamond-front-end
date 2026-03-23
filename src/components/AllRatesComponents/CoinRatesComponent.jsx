@@ -27,23 +27,43 @@ import { Delete, Edit, Add, CloudUpload } from "@mui/icons-material";
 import {
     useFetchGoldCoinRatesQuery,
     useAddGoldCoinRateMutation,
-    useDeleteGoldCoinRateMutation
+    useDeleteGoldCoinRateMutation,
+    useFetchRateDifferenceQuery,
+    useAddRateDifferenceMutation
 } from "../../store";
 import { toast } from "react-toastify";
+import useUserPermissions from "../../utils/useSubAdmin";
 
 export default function CoinRatesComponent() {
+    const { isSubAdmin } = useUserPermissions();
     const { data: coinRatesData, isLoading } = useFetchGoldCoinRatesQuery();
     const [addGoldCoinRate, { isLoading: isSaving }] = useAddGoldCoinRateMutation();
     const [deleteGoldCoinRate] = useDeleteGoldCoinRateMutation();
 
+    // Global Rate Difference hooks
+    const { data: rateDiffData } = useFetchRateDifferenceQuery();
+    const [addRateDifference, { isLoading: isSavingGlobal }] = useAddRateDifferenceMutation();
+
     const coinRates = coinRatesData?.data || [];
+    const [globalDisparity, setGlobalDisparity] = useState({
+        gold_coin_disparity: 0,
+        silver_coin_disparity: 0
+    });
+
+    React.useEffect(() => {
+        if (rateDiffData?.data?.[0]) {
+            setGlobalDisparity({
+                gold_coin_disparity: rateDiffData.data[0].gold_coin_disparity || 0,
+                silver_coin_disparity: rateDiffData.data[0].silver_coin_disparity || 0
+            });
+        }
+    }, [rateDiffData]);
 
     const [open, setOpen] = useState(false);
     const [editingCoin, setEditingCoin] = useState(null);
     const [formData, setFormData] = useState({
         title: "",
         grams: "",
-        disparity: "",
         metal_type: "Gold",
         image: null,
         quantities: "", // Added for selectable quantities
@@ -55,7 +75,6 @@ export default function CoinRatesComponent() {
             setFormData({
                 title: coin.title,
                 grams: coin.grams || coin.qty || "",
-                disparity: coin.disparity || coin.amount || "",
                 metal_type: coin.metal_type || "Gold",
                 image: null,
                 quantities: Array.isArray(coin.quantities) ? coin.quantities.join(", ") : (coin.quantities || ""),
@@ -65,7 +84,6 @@ export default function CoinRatesComponent() {
             setFormData({
                 title: "",
                 grams: "",
-                disparity: "",
                 metal_type: "Gold",
                 image: null,
                 quantities: "",
@@ -86,7 +104,6 @@ export default function CoinRatesComponent() {
         if (editingCoin?.id) form.append("id", editingCoin.id);
         form.append("title", formData.title);
         form.append("grams", formData.grams);
-        form.append("disparity", formData.disparity);
         form.append("metal_type", formData.metal_type);
         form.append("quantities", formData.quantities); // Send as string, backend handles conversion
         if (formData.image instanceof File) {
@@ -123,8 +140,64 @@ export default function CoinRatesComponent() {
         }
     };
 
+    const handleGlobalSave = async () => {
+        try {
+            const res = await addRateDifference({
+                ...rateDiffData.data[0],
+                gold_coin_disparity: globalDisparity.gold_coin_disparity,
+                silver_coin_disparity: globalDisparity.silver_coin_disparity
+            }).unwrap();
+            if (res.code === 200 || res.code === 201) {
+                toast.success("Global coin disparities saved successfully");
+            }
+        } catch (error) {
+            toast.error("Error saving global disparities");
+        }
+    };
+
     return (
         <Box>
+            {/* Global Disparity Inputs */}
+            <Paper sx={{ p: 3, mb: 4, borderRadius: '15px', boxShadow: 3 }}>
+                <Typography variant="h6" fontWeight="bold" mb={2}>
+                    Global Coin Disparity Settings
+                </Typography>
+                <Grid container spacing={3} alignItems="center">
+                    <Grid item xs={12} sm={4}>
+                        <TextField
+                            fullWidth
+                            label="Gold Coin Disparity (per gm)"
+                            type="number"
+                            value={globalDisparity.gold_coin_disparity}
+                            onChange={(e) => setGlobalDisparity({ ...globalDisparity, gold_coin_disparity: e.target.value })}
+                            disabled={isSubAdmin}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <TextField
+                            fullWidth
+                            label="Silver Coin Disparity (per gm)"
+                            type="number"
+                            value={globalDisparity.silver_coin_disparity}
+                            onChange={(e) => setGlobalDisparity({ ...globalDisparity, silver_coin_disparity: e.target.value })}
+                            disabled={isSubAdmin}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={handleGlobalSave}
+                            disabled={isSavingGlobal || isSubAdmin}
+                            fullWidth
+                            sx={{ height: '56px', borderRadius: '12px' }}
+                        >
+                            {isSavingGlobal ? <CircularProgress size={24} color="inherit" /> : "Save Global Settings"}
+                        </Button>
+                    </Grid>
+                </Grid>
+            </Paper>
+
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
                 <Typography variant="h5" fontWeight="bold">
                     Coin Management
@@ -134,6 +207,7 @@ export default function CoinRatesComponent() {
                     color="primary"
                     startIcon={<Add />}
                     onClick={() => handleOpen()}
+                    disabled={isSubAdmin}
                 >
                     Add New Coin
                 </Button>
@@ -147,7 +221,6 @@ export default function CoinRatesComponent() {
                             <TableCell sx={{ fontWeight: 'bold' }}>Metal</TableCell>
                             <TableCell sx={{ fontWeight: 'bold' }}>Title</TableCell>
                             <TableCell sx={{ fontWeight: 'bold' }}>Grams</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold' }}>Disparity (per gm)</TableCell>
                             <TableCell align="right" sx={{ fontWeight: 'bold' }}>Actions</TableCell>
                         </TableRow>
                     </TableHead>
@@ -190,7 +263,6 @@ export default function CoinRatesComponent() {
                                     </TableCell>
                                     <TableCell>{coin.title}</TableCell>
                                     <TableCell>{coin.grams || coin.qty}g</TableCell>
-                                    <TableCell>₹{coin.disparity || coin.amount}</TableCell>
                                     <TableCell align="right">
                                         <IconButton color="primary" onClick={() => handleOpen(coin)} size="small">
                                             <Edit />
@@ -235,7 +307,7 @@ export default function CoinRatesComponent() {
                                     variant="outlined"
                                 />
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={12}>
                                 <TextField
                                     fullWidth
                                     label="Weight (Grams)"
@@ -243,16 +315,6 @@ export default function CoinRatesComponent() {
                                     inputProps={{ step: "0.001" }}
                                     value={formData.grams}
                                     onChange={(e) => setFormData({ ...formData, grams: e.target.value })}
-                                    required
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <TextField
-                                    fullWidth
-                                    label="Disparity (Rate per gm)"
-                                    type="number"
-                                    value={formData.disparity}
-                                    onChange={(e) => setFormData({ ...formData, disparity: e.target.value })}
                                     required
                                 />
                             </Grid>
