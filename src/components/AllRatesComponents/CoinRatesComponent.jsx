@@ -269,8 +269,14 @@ export default function CoinRatesComponent() {
                                     <TableCell>{coin.title}</TableCell>
                                     <TableCell>{coin.grams || coin.qty}g</TableCell>
                                     <TableCell>
-                                        <Typography variant="body2" sx={{ color: coin.disparity > 0 ? 'primary.main' : 'text.secondary', fontWeight: coin.disparity > 0 ? 'bold' : 'normal' }}>
-                                            {coin.disparity > 0 ? `₹${coin.disparity}` : 'Global'}
+                                        <Typography
+                                            variant="body2"
+                                            sx={{
+                                                color: coin.disparity !== 0 ? 'primary.main' : 'text.secondary',
+                                                fontWeight: coin.disparity !== 0 ? 'bold' : 'normal'
+                                            }}
+                                        >
+                                            {coin.disparity === 0 ? 'Global Rate' : (coin.disparity > 0 ? `₹${coin.disparity}` : `₹${coin.disparity}`)}
                                         </Typography>
                                     </TableCell>
                                     <TableCell align="right">
@@ -341,11 +347,11 @@ export default function CoinRatesComponent() {
                             <Grid item xs={12}>
                                 <TextField
                                     fullWidth
-                                    label="Specific Disparity (Optional)"
+                                    label="Specific Adjustment (Optional)"
                                     type="number"
                                     value={formData.disparity}
                                     onChange={(e) => setFormData({ ...formData, disparity: e.target.value })}
-                                    helperText="If 0, global metal disparity will be used."
+                                    helperText="This value will be added to or subtracted from the global metal disparity."
                                     variant="outlined"
                                 />
                             </Grid>

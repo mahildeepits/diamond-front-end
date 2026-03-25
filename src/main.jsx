@@ -101,7 +101,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           "&.MuiInputLabel-shrink": {
-            zIndex: 9999,
+            zIndex: 999,
             background: "#fff",
             padding: "0px 2px",
           },
