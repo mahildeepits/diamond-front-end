@@ -67,6 +67,7 @@ export default function CoinRatesComponent() {
         metal_type: "Gold",
         image: null,
         quantities: "", // Added for selectable quantities
+        disparity: 0,
     });
 
     const handleOpen = (coin = null) => {
@@ -78,6 +79,7 @@ export default function CoinRatesComponent() {
                 metal_type: coin.metal_type || "Gold",
                 image: null,
                 quantities: Array.isArray(coin.quantities) ? coin.quantities.join(", ") : (coin.quantities || ""),
+                disparity: coin.disparity || 0,
             });
         } else {
             setEditingCoin(null);
@@ -87,6 +89,7 @@ export default function CoinRatesComponent() {
                 metal_type: "Gold",
                 image: null,
                 quantities: "",
+                disparity: 0,
             });
         }
         setOpen(true);
@@ -106,6 +109,7 @@ export default function CoinRatesComponent() {
         form.append("grams", formData.grams);
         form.append("metal_type", formData.metal_type);
         form.append("quantities", formData.quantities); // Send as string, backend handles conversion
+        form.append("disparity", formData.disparity);
         if (formData.image instanceof File) {
             form.append("image", formData.image);
         }
@@ -221,6 +225,7 @@ export default function CoinRatesComponent() {
                             <TableCell sx={{ fontWeight: 'bold' }}>Metal</TableCell>
                             <TableCell sx={{ fontWeight: 'bold' }}>Title</TableCell>
                             <TableCell sx={{ fontWeight: 'bold' }}>Grams</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold' }}>Disparity (gm)</TableCell>
                             <TableCell align="right" sx={{ fontWeight: 'bold' }}>Actions</TableCell>
                         </TableRow>
                     </TableHead>
@@ -263,6 +268,11 @@ export default function CoinRatesComponent() {
                                     </TableCell>
                                     <TableCell>{coin.title}</TableCell>
                                     <TableCell>{coin.grams || coin.qty}g</TableCell>
+                                    <TableCell>
+                                        <Typography variant="body2" sx={{ color: coin.disparity > 0 ? 'primary.main' : 'text.secondary', fontWeight: coin.disparity > 0 ? 'bold' : 'normal' }}>
+                                            {coin.disparity > 0 ? `₹${coin.disparity}` : 'Global'}
+                                        </Typography>
+                                    </TableCell>
                                     <TableCell align="right">
                                         <IconButton color="primary" onClick={() => handleOpen(coin)} size="small">
                                             <Edit />
@@ -325,6 +335,17 @@ export default function CoinRatesComponent() {
                                     value={formData.quantities}
                                     onChange={(e) => setFormData({ ...formData, quantities: e.target.value })}
                                     helperText="Users can only select from these quantities when booking this coin."
+                                    variant="outlined"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    fullWidth
+                                    label="Specific Disparity (Optional)"
+                                    type="number"
+                                    value={formData.disparity}
+                                    onChange={(e) => setFormData({ ...formData, disparity: e.target.value })}
+                                    helperText="If 0, global metal disparity will be used."
                                     variant="outlined"
                                 />
                             </Grid>
