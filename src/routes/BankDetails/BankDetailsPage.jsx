@@ -51,8 +51,8 @@ export default function BankDetailsPage() {
     setIsAddingNewBank(false);
     setSelectedTab(bankDetails.length - 1);
   };
-  const handleSaveNewBank = async (values) => {
-    if (isAddingNewBank) {
+  const handleSaveNewBank = async (values, bankId) => {
+    if (!bankId) {
       try {
         const res = await addBankDetails(values);
         if (res.data.code == 200 || res.data.code == 201) {
@@ -66,7 +66,7 @@ export default function BankDetailsPage() {
       try {
         const data = {
           values: values,
-          id: userId,
+          id: bankId,
         };
         const res = await updateBankDetails(data);
         if (res.data.code == 200 || res.data.code == 201) {

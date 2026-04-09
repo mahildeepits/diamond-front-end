@@ -21,8 +21,10 @@ export default function FrontEndLiveRatesComponent({ setOpenBookingModal }) {
     const [nextMonthGoldCostTds, setNextMonthGoldCostTds] = useState({ previous: 0, current: 0 });
     const [nextMonthRateShow, setNextMonthRateShow] = useState(0);
     const [priceVisibility, setPriceVisibility] = useState(0);
+    const [silverPriceVisibility, setSilverPriceVisibility] = useState(0);
     const [retailGoldRate, setRetailGoldRate] = useState({ previous: 0, current: 0 });
     const [retailGoldRateStatus, setRetailGoldRateStatus] = useState(0);
+    const [goldBookingStatus, setGoldBookingStatus] = useState(0);
     const [contactInfo, setContactInfo] = useState({ contact: '9876543210', accountMng: '9876543210' });
 
     // Silver states
@@ -60,6 +62,8 @@ export default function FrontEndLiveRatesComponent({ setOpenBookingModal }) {
     useEffect(() => {
         if (data && data.code == 200) {
             setPriceVisibility(data.data.current_rate_status);
+            setSilverPriceVisibility(data.data.silver_rate_status ?? data.data.current_rate_status);
+            setGoldBookingStatus(data.data.gold_booking_status ?? 0);
         }
     }, [data]);
 
@@ -112,6 +116,12 @@ export default function FrontEndLiveRatesComponent({ setOpenBookingModal }) {
         socket.on('bookingTimeChanged', (res) => {
             if (res?.manage_booking?.current_rate_status !== undefined) {
                 setPriceVisibility(res.manage_booking.current_rate_status);
+            }
+            if (res?.manage_booking?.silver_rate_status !== undefined) {
+                setSilverPriceVisibility(res.manage_booking.silver_rate_status);
+            }
+            if (res?.manage_booking?.gold_booking_status !== undefined) {
+                setGoldBookingStatus(res.manage_booking.gold_booking_status);
             }
         });
         socket.on('rates', (res) => {
@@ -196,7 +206,7 @@ export default function FrontEndLiveRatesComponent({ setOpenBookingModal }) {
                         <Box>
                             <Typography className="card-title">Silver <span style={{ fontSize: '12px', fontWeight: 400, color: '#333' }}>24k | 999</span></Typography>
                             <Typography className="card-price">
-                                <PriceDisplay prefix="₹" prev={silverPrice.previous} curr={silverPrice.current} visible={priceVisibility} flashBg forceShow /> <span className="card-unit">/kg</span>
+                                <PriceDisplay prefix="₹" prev={silverPrice.previous} curr={silverPrice.current} visible={silverPriceVisibility} flashBg forceShow /> <span className="card-unit">/kg</span>
                             </Typography>
                         </Box>
                         <Box className="card-footer-line" sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -307,13 +317,13 @@ export default function FrontEndLiveRatesComponent({ setOpenBookingModal }) {
                         </Box>
                         <Box>
                             <Typography sx={{ fontSize: '1.2rem', fontWeight: 800, color: '#000000' }}>
-                                <PriceDisplay prefix="₹" prev={silverCostTds.previous} curr={silverCostTds.current} visible={priceVisibility} flashBg />
+                                <PriceDisplay prefix="₹" prev={silverCostTds.previous} curr={silverCostTds.current} visible={silverPriceVisibility} flashBg />
                             </Typography>
                         </Box>
                     </Box>
 
-                    {/* Retail Gold TDS Card */}
-                    {!!retailGoldRateStatus && (
+                    {/* Retail Gold TDS Card - cascades with gold status */}
+                    {!!retailGoldRateStatus && !!goldBookingStatus && !!priceVisibility && (
                         <Box sx={{
                             display: 'flex',
                             alignItems: 'center',
@@ -365,7 +375,7 @@ export default function FrontEndLiveRatesComponent({ setOpenBookingModal }) {
                             <span className="app-metal-name">Silver <span className="app-purity">24k | 999</span></span>
                         </div>
                         <div className="app-rate-price">
-                            <PriceDisplay prefix="₹" prev={silverPrice.previous} curr={silverPrice.current} visible={priceVisibility} flashBg forceShow /> <span className="app-unit">/kg</span>
+                            <PriceDisplay prefix="₹" prev={silverPrice.previous} curr={silverPrice.current} visible={silverPriceVisibility} flashBg forceShow /> <span className="app-unit">/kg</span>
                         </div>
                         <div className="app-rate-footer">
                             <div className="app-live-tag"><span className="app-dot red"></span> Live Rate</div>
@@ -453,12 +463,13 @@ export default function FrontEndLiveRatesComponent({ setOpenBookingModal }) {
                         </Box>
                         <Box>
                             <Typography sx={{ fontSize: '1.2rem', fontWeight: 800, color: '#000000' }}>
-                                <PriceDisplay prefix="₹" prev={silverCostTds.previous} curr={silverCostTds.current} visible={priceVisibility} flashBg />
+                                <PriceDisplay prefix="₹" prev={silverCostTds.previous} curr={silverCostTds.current} visible={silverPriceVisibility} flashBg />
                             </Typography>
                         </Box>
                     </Box>
 
-                    {!!retailGoldRateStatus && (
+                    {/* Mobile Retail Gold - cascades with gold status */}
+                    {!!retailGoldRateStatus && !!goldBookingStatus && !!priceVisibility && (
                         <Box sx={{
                             display: 'flex',
                             alignItems: 'center',

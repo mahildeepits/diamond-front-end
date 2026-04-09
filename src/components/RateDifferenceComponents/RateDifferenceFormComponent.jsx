@@ -6,13 +6,14 @@ import {
   Switch,
   TextField,
   Typography,
+  IconButton,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { useFormik } from "formik";
 import { useState, useEffect } from "react";
 import { useAddRateDifferenceMutation } from "../../store";
 import { toast } from "react-toastify";
-import { CurrencyRupee } from "@mui/icons-material";
+import { CurrencyRupee, Add, Remove } from "@mui/icons-material";
 import useUserPermissions from "../../utils/useSubAdmin";
 export default function RateDifferenceFormComponent({ data }) {
   const { isSubAdmin } = useUserPermissions();
@@ -64,6 +65,12 @@ export default function RateDifferenceFormComponent({ data }) {
   };
   const handleRetailGoldSwitchChange = (event) => {
     setFieldValue("retail_gold_rate_status", event.target.checked ? 1 : 0);
+  };
+  const handleIncrement = (fieldName) => {
+    setFieldValue(fieldName, Number(values[fieldName] || 0) + 1);
+  };
+  const handleDecrement = (fieldName) => {
+    setFieldValue(fieldName, Number(values[fieldName] || 0) - 1);
   };
   const handleFormSubmit = async () => {
     try {
@@ -117,30 +124,57 @@ export default function RateDifferenceFormComponent({ data }) {
           Enter your rate GOLD difference
           {/* <Typography variant="caption">(With TDS)</Typography> */}
         </Typography>
-        <TextField
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <CurrencyRupee color="primary" />
-              </InputAdornment>
-            ),
-          }}
-          name={"including_tds"}
-          value={values.including_tds || ""}
-          placeholder="Enter your difference here"
-          onChange={handleChange}
-          onBlur={handleBlur}
-          type="number"
-          disabled={isSubAdmin}
-          fullWidth
-          sx={
-            {
-              "& .MuiOutlinedInput-input": {
-                color: "black",
-              },
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <IconButton
+            onClick={() => handleDecrement("including_tds")}
+            disabled={isSubAdmin}
+            sx={{
+              bgcolor: "black",
+              color: "white",
+              borderRadius: 2,
+              "&:hover": { bgcolor: "black", opacity: 0.8 },
+            }}
+          >
+            <Remove />
+          </IconButton>
+          <TextField
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <CurrencyRupee color="primary" />
+                </InputAdornment>
+              ),
+            }}
+            name={"including_tds"}
+            value={values.including_tds || ""}
+            placeholder="Enter your difference here"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            type="number"
+            disabled={isSubAdmin}
+            fullWidth
+            sx={
+              {
+                "& .MuiOutlinedInput-input": {
+                  color: "black",
+                  textAlign: "center",
+                },
+              }
             }
-          }
-        />
+          />
+          <IconButton
+            onClick={() => handleIncrement("including_tds")}
+            disabled={isSubAdmin}
+            sx={{
+              bgcolor: "black",
+              color: "white",
+              borderRadius: 2,
+              "&:hover": { bgcolor: "black", opacity: 0.8 },
+            }}
+          >
+            <Add />
+          </IconButton>
+        </Box>
       </Box>
       {/* <Box sx={{ my: 2 }}>
         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -221,30 +255,57 @@ export default function RateDifferenceFormComponent({ data }) {
           Enter your rate SILVER difference
           {/* <Typography variant="caption">(With TDS)</Typography> */}
         </Typography>
-        <TextField
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <CurrencyRupee color="primary" />
-              </InputAdornment>
-            ),
-          }}
-          name={"including_silver_tds"}
-          value={values.including_silver_tds || ""}
-          placeholder="Enter silver difference here"
-          onChange={handleChange}
-          onBlur={handleBlur}
-          type="number"
-          disabled={isSubAdmin}
-          fullWidth
-          sx={
-            {
-              "& .MuiOutlinedInput-input": {
-                color: "black",
-              },
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <IconButton
+            onClick={() => handleDecrement("including_silver_tds")}
+            disabled={isSubAdmin}
+            sx={{
+              bgcolor: "black",
+              color: "white",
+              borderRadius: 2,
+              "&:hover": { bgcolor: "black", opacity: 0.8 },
+            }}
+          >
+            <Remove />
+          </IconButton>
+          <TextField
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <CurrencyRupee color="primary" />
+                </InputAdornment>
+              ),
+            }}
+            name={"including_silver_tds"}
+            value={values.including_silver_tds || ""}
+            placeholder="Enter silver difference here"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            type="number"
+            disabled={isSubAdmin}
+            fullWidth
+            sx={
+              {
+                "& .MuiOutlinedInput-input": {
+                  color: "black",
+                  textAlign: "center",
+                },
+              }
             }
-          }
-        />
+          />
+          <IconButton
+            onClick={() => handleIncrement("including_silver_tds")}
+            disabled={isSubAdmin}
+            sx={{
+              bgcolor: "black",
+              color: "white",
+              borderRadius: 2,
+              "&:hover": { bgcolor: "black", opacity: 0.8 },
+            }}
+          >
+            <Add />
+          </IconButton>
+        </Box>
       </Box>
 
       {/* <Box sx={{ my: 2 }}>
@@ -299,30 +360,57 @@ export default function RateDifferenceFormComponent({ data }) {
             />
           </Box>
         </Box>
-        <TextField
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <CurrencyRupee color="primary" />
-              </InputAdornment>
-            ),
-          }}
-          name={"including_retail_gold_tds"}
-          value={values.including_retail_gold_tds || ""}
-          placeholder="Enter retail gold difference here"
-          onChange={handleChange}
-          onBlur={handleBlur}
-          type="number"
-          disabled={isSubAdmin}
-          fullWidth
-          sx={
-            {
-              "& .MuiOutlinedInput-input": {
-                color: "black",
-              },
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <IconButton
+            onClick={() => handleDecrement("including_retail_gold_tds")}
+            disabled={isSubAdmin}
+            sx={{
+              bgcolor: "black",
+              color: "white",
+              borderRadius: 2,
+              "&:hover": { bgcolor: "black", opacity: 0.8 },
+            }}
+          >
+            <Remove />
+          </IconButton>
+          <TextField
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <CurrencyRupee color="primary" />
+                </InputAdornment>
+              ),
+            }}
+            name={"including_retail_gold_tds"}
+            value={values.including_retail_gold_tds || ""}
+            placeholder="Enter retail gold difference here"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            type="number"
+            disabled={isSubAdmin}
+            fullWidth
+            sx={
+              {
+                "& .MuiOutlinedInput-input": {
+                  color: "black",
+                  textAlign: "center",
+                },
+              }
             }
-          }
-        />
+          />
+          <IconButton
+            onClick={() => handleIncrement("including_retail_gold_tds")}
+            disabled={isSubAdmin}
+            sx={{
+              bgcolor: "black",
+              color: "white",
+              borderRadius: 2,
+              "&:hover": { bgcolor: "black", opacity: 0.8 },
+            }}
+          >
+            <Add />
+          </IconButton>
+        </Box>
       </Box>
 
       {/* Coin Disparity Start */}
@@ -330,52 +418,104 @@ export default function RateDifferenceFormComponent({ data }) {
         <Typography component={"div"} sx={{ mb: 1 }}>
           Gold Coin Disparity (per gm)
         </Typography>
-        <TextField
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <CurrencyRupee color="primary" />
-              </InputAdornment>
-            ),
-          }}
-          name={"gold_coin_disparity"}
-          value={values.gold_coin_disparity || ""}
-          placeholder="Enter gold coin disparity here"
-          onChange={handleChange}
-          onBlur={handleBlur}
-          type="number"
-          disabled={isSubAdmin}
-          fullWidth
-          sx={{
-            "& .MuiOutlinedInput-input": { color: "black" },
-          }}
-        />
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <IconButton
+            onClick={() => handleDecrement("gold_coin_disparity")}
+            disabled={isSubAdmin}
+            sx={{
+              bgcolor: "black",
+              color: "white",
+              borderRadius: 2,
+              "&:hover": { bgcolor: "black", opacity: 0.8 },
+            }}
+          >
+            <Remove />
+          </IconButton>
+          <TextField
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <CurrencyRupee color="primary" />
+                </InputAdornment>
+              ),
+            }}
+            name={"gold_coin_disparity"}
+            value={values.gold_coin_disparity || ""}
+            placeholder="Enter gold coin disparity here"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            type="number"
+            disabled={isSubAdmin}
+            fullWidth
+            sx={{
+              "& .MuiOutlinedInput-input": { color: "black", textAlign: "center" },
+            }}
+          />
+          <IconButton
+            onClick={() => handleIncrement("gold_coin_disparity")}
+            disabled={isSubAdmin}
+            sx={{
+              bgcolor: "black",
+              color: "white",
+              borderRadius: 2,
+              "&:hover": { bgcolor: "black", opacity: 0.8 },
+            }}
+          >
+            <Add />
+          </IconButton>
+        </Box>
       </Box>
 
       <Box sx={{ my: 2 }}>
         <Typography component={"div"} sx={{ mb: 1 }}>
           Silver Coin Disparity (per gm)
         </Typography>
-        <TextField
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <CurrencyRupee color="primary" />
-              </InputAdornment>
-            ),
-          }}
-          name={"silver_coin_disparity"}
-          value={values.silver_coin_disparity || ""}
-          placeholder="Enter silver coin disparity here"
-          onChange={handleChange}
-          onBlur={handleBlur}
-          type="number"
-          disabled={isSubAdmin}
-          fullWidth
-          sx={{
-            "& .MuiOutlinedInput-input": { color: "black" },
-          }}
-        />
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <IconButton
+            onClick={() => handleDecrement("silver_coin_disparity")}
+            disabled={isSubAdmin}
+            sx={{
+              bgcolor: "black",
+              color: "white",
+              borderRadius: 2,
+              "&:hover": { bgcolor: "black", opacity: 0.8 },
+            }}
+          >
+            <Remove />
+          </IconButton>
+          <TextField
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <CurrencyRupee color="primary" />
+                </InputAdornment>
+              ),
+            }}
+            name={"silver_coin_disparity"}
+            value={values.silver_coin_disparity || ""}
+            placeholder="Enter silver coin disparity here"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            type="number"
+            disabled={isSubAdmin}
+            fullWidth
+            sx={{
+              "& .MuiOutlinedInput-input": { color: "black", textAlign: "center" },
+            }}
+          />
+          <IconButton
+            onClick={() => handleIncrement("silver_coin_disparity")}
+            disabled={isSubAdmin}
+            sx={{
+              bgcolor: "black",
+              color: "white",
+              borderRadius: 2,
+              "&:hover": { bgcolor: "black", opacity: 0.8 },
+            }}
+          >
+            <Add />
+          </IconButton>
+        </Box>
       </Box>
       {/* Coin Disparity End */}
       <Box>

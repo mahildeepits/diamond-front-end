@@ -37,7 +37,7 @@ function BankDetailsFormComponent({
     enableReinitialize: true,
     validationSchema: bankDetailsSchema,
     onSubmit: (values) => {
-      onSave(values);
+      onSave(values, bank.id);
     },
   });
   const handleOpenDelete = () => {
@@ -122,9 +122,14 @@ function BankDetailsFormComponent({
             }}
             label="Account Number"
             name="account_number"
-            type="number"
+            type="text"
             value={formik.values.account_number}
-            onChange={formik.handleChange}
+            onChange={(e) => {
+              const val = e.target.value;
+              if (val === "" || /^[0-9]+$/.test(val)) {
+                formik.handleChange(e);
+              }
+            }}
             disabled={isSubAdmin}
             onBlur={formik.handleBlur}
             error={

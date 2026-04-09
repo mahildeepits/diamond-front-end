@@ -71,7 +71,7 @@ export default function LiveRatesComponent({ setOpenBookingModal }) {
     useEffect(() => {
         const socket = io(import.meta.env.VITE_LIVE_SERVER_URL);
         socket.on('bookingTimeChanged', (data) => {
-            console.log('booking time',data);
+            console.log('booking time', data);
             setPriceVisibility(data.manage_booking.current_rate_status);
         });
         socket.on('rateDifference', (data) => {

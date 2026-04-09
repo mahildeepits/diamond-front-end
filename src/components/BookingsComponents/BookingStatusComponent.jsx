@@ -6,6 +6,7 @@ import {
   TextField,
   Typography,
   FormControlLabel,
+  Divider,
 } from "@mui/material";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
@@ -13,39 +14,46 @@ import { useAddBookingStatusMutation } from "../../store/apis/BookingsAPI";
 import { toast } from "react-toastify";
 import { LoadingButton } from "@mui/lab";
 import useUserPermissions from "../../utils/useSubAdmin";
+
 export default function BookingStatusComponent({ data }) {
   const { isSubAdmin } = useUserPermissions();
-  const [bookingStatus, setBookingStatus] = useState(true);
-  const [hideRate, setHideRate] = useState(false);
+
+  // Gold controls
+  const [goldBooking, setGoldBooking] = useState(false);
+  const [goldRateVisible, setGoldRateVisible] = useState(false);
+
+  // Silver controls
+  const [silverBooking, setSilverBooking] = useState(false);
+  const [silverRateVisible, setSilverRateVisible] = useState(false);
+
   const [addBookingStatus, { isLoading }] = useAddBookingStatusMutation();
-  const handleChangeSwitch = () => {
-    setBookingStatus(!bookingStatus);
-  };
-  const handleChangeRateSwitch = () => {
-    setHideRate(!hideRate);
-  };
+
   const defaultFormFields = {
     start_time: "",
     end_time: "",
     clear_pending_order_time: "",
-    current_rate_status: 1,
   };
+
   const { values, handleChange, handleSubmit, setValues } = useFormik({
     initialValues: defaultFormFields,
     enableReinitialize: true,
     onSubmit: (values) => handleFormSubmit(values),
   });
+
   const handleFormSubmit = async (values) => {
-    const data = {
-      status: hideRate ? bookingStatus : false,
+    const payload = {
       ...values,
-      current_rate_status: hideRate ? 1 : 0,
+      // Gold
+      gold_booking_status: goldBooking ? 1 : 0,
+      current_rate_status: goldRateVisible ? 1 : 0,
+      // Silver
+      silver_booking_status: silverBooking ? 1 : 0,
+      silver_rate_status: silverRateVisible ? 1 : 0,
+      // Legacy global status — keep ON as long as any booking is open
+      status: (goldBooking || silverBooking) ? 1 : 0,
     };
-    if (!hideRate) {
-      setBookingStatus(false);
-    }
     try {
-      const res = await addBookingStatus(data);
+      const res = await addBookingStatus(payload);
       if (res.data.code == 200) {
         toast.success("Booking status updated");
       }
@@ -53,18 +61,32 @@ export default function BookingStatusComponent({ data }) {
       console.log("🚀 ~ handleFormSubmit ~ error:", error);
     }
   };
+
   useEffect(() => {
     if (data) {
       setValues({
-        start_time: data.start_time,
-        end_time: data.end_time,
-        clear_pending_order_time: data.clear_pending_order_time,
-        current_rate_status: data.current_rate_status,
+        start_time: data.start_time || "",
+        end_time: data.end_time || "",
+        clear_pending_order_time: data.clear_pending_order_time || "",
       });
-      setBookingStatus(data.status == 1 ? true : false);
-      setHideRate(data.current_rate_status == 1 ? true : false);
+      setGoldBooking(data.gold_booking_status == 1);
+      setGoldRateVisible(data.current_rate_status == 1);
+      setSilverBooking(data.silver_booking_status == 1);
+      setSilverRateVisible(data.silver_rate_status == 1);
     }
   }, [data, setValues]);
+
+  const switchSx = {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    mb: 1.5,
+    px: 1,
+    py: 0.5,
+    borderRadius: "8px",
+    bgcolor: "#f9f9f9",
+  };
+
   return (
     <Paper sx={{
       p: 3,
@@ -72,74 +94,94 @@ export default function BookingStatusComponent({ data }) {
       bgcolor: "white",
       color: "black",
       "& .MuiTypography-root": { color: "black" },
-      "& .MuiOutlinedInput-root": {
-        background: "#f4f4f4",
-        color: "black",
-      },
+      "& .MuiOutlinedInput-root": { background: "#f4f4f4", color: "black" },
       "& .MuiInputLabel-root": { color: "rgba(0, 0, 0, 0.7)" },
       "& .MuiFormHelperText-root": { color: "rgba(0, 0, 0, 0.7)" }
     }}>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          mb: 2,
-          justifyContent: "space-between",
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            mb: 2,
-            justifyContent: "start",
-            width: "100%",
-          }}
-        >
-          <Typography sx={{ mr: 2 }}>Booking Status</Typography>
-          <FormControlLabel
-            control={
-              <Switch
-                disabled={isSubAdmin}
-                checked={bookingStatus}
-                onChange={handleChangeSwitch}
-                name="booking_status"
-              />
-            }
-            label={bookingStatus ? "On" : "Off"}
-          />
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            mb: 2,
-            justifyContent: "start",
-            width: "100%",
-          }}
-        >
-          <Typography sx={{ mr: 2 }}>Hide current rate</Typography>
-          <FormControlLabel
-            control={
-              <Switch
-                disabled={isSubAdmin}
-                checked={hideRate}
-                onChange={handleChangeRateSwitch}
-                name="current_rate_status"
-              />
-            }
-            label={hideRate ? "On" : "Off"}
-          />
-        </Box>
+
+      {/* ── GOLD SECTION ── */}
+      <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 1, color: "#b8860b !important" }}>
+        🟡 Gold
+      </Typography>
+      <Box sx={switchSx}>
+        <Typography>Gold Booking</Typography>
+        <FormControlLabel
+          control={
+            <Switch
+              disabled={isSubAdmin}
+              checked={goldBooking}
+              onChange={() => setGoldBooking(!goldBooking)}
+              color="warning"
+            />
+          }
+          label={goldBooking ? "Open" : "Closed"}
+          labelPlacement="start"
+          sx={{ m: 0 }}
+        />
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: { sm: "row", xs: "column" },
-          width: "100%",
-          gap: "10px",
-        }}
-      >
+      <Box sx={switchSx}>
+        <Typography>Gold Rate Visible</Typography>
+        <FormControlLabel
+          control={
+            <Switch
+              disabled={isSubAdmin}
+              checked={goldRateVisible}
+              onChange={() => setGoldRateVisible(!goldRateVisible)}
+              color="warning"
+            />
+          }
+          label={goldRateVisible ? "Shown" : "Hidden"}
+          labelPlacement="start"
+          sx={{ m: 0 }}
+        />
+      </Box>
+
+      <Divider sx={{ my: 2 }} />
+
+      {/* ── SILVER SECTION ── */}
+      <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 1, color: "#708090 !important" }}>
+        ⚪ Silver
+      </Typography>
+      <Box sx={switchSx}>
+        <Typography>Silver Booking</Typography>
+        <FormControlLabel
+          control={
+            <Switch
+              disabled={isSubAdmin}
+              checked={silverBooking}
+              onChange={() => setSilverBooking(!silverBooking)}
+              color="default"
+            />
+          }
+          label={silverBooking ? "Open" : "Closed"}
+          labelPlacement="start"
+          sx={{ m: 0 }}
+        />
+      </Box>
+      <Box sx={switchSx}>
+        <Typography>Silver Rate Visible</Typography>
+        <FormControlLabel
+          control={
+            <Switch
+              disabled={isSubAdmin}
+              checked={silverRateVisible}
+              onChange={() => setSilverRateVisible(!silverRateVisible)}
+              color="default"
+            />
+          }
+          label={silverRateVisible ? "Shown" : "Hidden"}
+          labelPlacement="start"
+          sx={{ m: 0 }}
+        />
+      </Box>
+
+      <Divider sx={{ my: 2 }} />
+
+      {/* ── TIME SLOTS ── */}
+      <Typography variant="subtitle2" sx={{ mb: 1.5, color: "rgba(0,0,0,0.6) !important" }}>
+        Booking Time Slot
+      </Typography>
+      <Box sx={{ display: "flex", flexDirection: { sm: "row", xs: "column" }, width: "100%", gap: "10px" }}>
         <Box width={"100%"}>
           <Typography>Start time</Typography>
           <TextField
@@ -149,14 +191,10 @@ export default function BookingStatusComponent({ data }) {
             variant="outlined"
             fullWidth
             value={values.start_time}
-            helperText="You will not receive any orders before this time"
+            helperText="No orders before this time"
             name="start_time"
             sx={{
-              "& .MuiOutlinedInput-input": {
-                color: "black",
-                border: "1px solid #ccc",
-                borderRadius: "5px"
-              },
+              "& .MuiOutlinedInput-input": { color: "black", border: "1px solid #ccc", borderRadius: "5px" },
               "& .MuiInputLabel-root": { color: "rgba(0, 0, 0, 0.7)" },
               "& .MuiFormHelperText-root": { color: "rgba(0, 0, 0, 0.7)" }
             }}
@@ -170,44 +208,19 @@ export default function BookingStatusComponent({ data }) {
             variant="outlined"
             disabled={isSubAdmin}
             fullWidth
-            helperText="You will not receive any orders past this time"
+            helperText="No orders past this time"
             name="end_time"
             value={values.end_time}
             sx={{
-              "& .MuiOutlinedInput-input": {
-                color: "black",
-                border: "1px solid #ccc",
-                borderRadius: "5px"
-              },
+              "& .MuiOutlinedInput-input": { color: "black", border: "1px solid #ccc", borderRadius: "5px" },
               "& .MuiInputLabel-root": { color: "rgba(0, 0, 0, 0.7)" },
               "& .MuiFormHelperText-root": { color: "rgba(0, 0, 0, 0.7)" }
             }}
           />
         </Box>
       </Box>
-      {/* <Box sx={{ width: { sm: "50%", xs: "100%" }, my: 3 }}>
-        <Typography>Clear pending orders</Typography>
-        <TextField
-          variant="outlined"
-          onChange={handleChange}
-          type="time"
-          fullWidth
-          disabled={isSubAdmin}
-          helperText="All pending orders will be deleted at this time"
-          name="clear_pending_order_time"
-          value={values.clear_pending_order_time}
-          sx={{
-            "& .MuiOutlinedInput-input": {
-              color: "black",
-              border: "1px solid #ccc",
-              borderRadius: "5px",
-            },
-            "& .MuiInputLabel-root": { color: "rgba(0, 0, 0, 0.7)" },
-            "& .MuiFormHelperText-root": { color: "rgba(0, 0, 0, 0.7)" }
-          }}
-        />
-      </Box> */}
-      <Box sx={{ mt: 2 }}>
+
+      <Box sx={{ mt: 3 }}>
         <LoadingButton
           loading={isLoading}
           disabled={isSubAdmin}

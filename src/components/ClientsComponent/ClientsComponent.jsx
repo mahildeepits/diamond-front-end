@@ -208,12 +208,114 @@ export default function ClientsComponent({ isSubAdmin }) {
       ) : (
         <>
           <SearchComponent handleChange={handleSearch} />
-          <DataGridComponent
-            rows={clientData}
-            columns={memoizedColumns}
-            applyHeight={true}
-            loading={isLoading || isFetching}
-          />
+          {/* Custom Card List Replaces DataGrid */}
+          {isLoading || isFetching ? (
+            <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}><Loader /></Box>
+          ) : (
+            <Box sx={{ width: "100%", mt: 2 }}>
+                {clientData.length === 0 ? (
+                    <Typography sx={{ color: "text.primary", textAlign: "center", py: 4 }}>No Users Found</Typography>
+                ) : (
+                    clientData.map((row) => (
+                        <Box key={row.id} sx={{
+                            backgroundColor: "#ffffff",
+                            borderRadius: "10px",
+                            p: 2,
+                            display: "flex",
+                            flexDirection: "column",
+                            color: "#000000",
+                            mb: 1.5,
+                            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                            border: "1px solid #e0e0e0"
+                        }}>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+                                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '50px', height: '50px', bgcolor: '#f5f5f5', borderRadius: '8px', mr: 2, border: '1px solid #ddd' }}>
+                                        <Typography sx={{ fontSize: '20px', fontWeight: 'bold', color: '#555' }}>
+                                            {row.name ? row.name.charAt(0).toUpperCase() : 'U'}
+                                        </Typography>
+                                    </Box>
+                                    <Box>
+                                        <Typography sx={{ fontWeight: 'bold', fontSize: '16px', color: "#000" }}>{row.name || "Unknown User"}</Typography>
+                                        <Typography sx={{ fontSize: '13px', color: '#555555' }}>{row.mobile || "N/A"}</Typography>
+                                        <Typography sx={{ fontSize: '12px', color: '#777777' }}>{row.email || "No Email"}</Typography>
+                                    </Box>
+                                </Box>
+                                <Box sx={{ textAlign: 'right' }}>
+                                    <Switch
+                                      checked={row.status === 1}
+                                      onChange={() => handleStatusChange(row)}
+                                      color="primary"
+                                      size="small"
+                                    />
+                                    <Typography sx={{ fontSize: '11px', color: '#888', mt: 0.5 }}>
+                                        {dayjs(row.created_at).format('DD MMM YYYY')}
+                                    </Typography>
+                                </Box>
+                            </Box>
+                            
+                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, my: 1, pt: 1, borderTop: '1px solid #f0f0f0' }}>
+                                <Box sx={{ flex: '1 1 30%', minWidth: '100px', bgcolor: '#fff8e1', p: 1, borderRadius: '5px', border: '1px solid #ffe082' }}>
+                                    <Typography sx={{ fontSize: '11px', fontWeight: 'bold', color: '#b28900', mb: 0.5, textAlign: "center" }}>GOLD</Typography>
+                                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                       <Typography sx={{ fontSize: '11px', color: '#555' }}>Limit:</Typography>
+                                       <Typography sx={{ fontSize: '11px', fontWeight: 'bold' }}>{row.limit || 0}</Typography>
+                                    </Box>
+                                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                       <Typography sx={{ fontSize: '11px', color: '#555' }}>Bal:</Typography>
+                                       <Typography sx={{ fontSize: '11px', fontWeight: 'bold' }}>{row.balance || 0}</Typography>
+                                    </Box>
+                                </Box>
+                                <Box sx={{ flex: '1 1 30%', minWidth: '100px', bgcolor: '#f5f5f5', p: 1, borderRadius: '5px', border: '1px solid #e0e0e0' }}>
+                                    <Typography sx={{ fontSize: '11px', fontWeight: 'bold', color: '#666', mb: 0.5, textAlign: "center" }}>SILVER</Typography>
+                                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                       <Typography sx={{ fontSize: '11px', color: '#555' }}>Limit:</Typography>
+                                       <Typography sx={{ fontSize: '11px', fontWeight: 'bold' }}>{row.silver_limit || 0}</Typography>
+                                    </Box>
+                                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                       <Typography sx={{ fontSize: '11px', color: '#555' }}>Bal:</Typography>
+                                       <Typography sx={{ fontSize: '11px', fontWeight: 'bold' }}>{row.silver_balance || 0}</Typography>
+                                    </Box>
+                                </Box>
+                                <Box sx={{ flex: '1 1 30%', minWidth: '100px', bgcolor: '#fff3e0', p: 1, borderRadius: '5px', border: '1px solid #ffcc80' }}>
+                                    <Typography sx={{ fontSize: '11px', fontWeight: 'bold', color: '#e65100', mb: 0.5, textAlign: "center" }}>RETAIL GOLD</Typography>
+                                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                       <Typography sx={{ fontSize: '11px', color: '#555' }}>Limit:</Typography>
+                                       <Typography sx={{ fontSize: '11px', fontWeight: 'bold' }}>{row.retail_gold_limit || 0}</Typography>
+                                    </Box>
+                                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                       <Typography sx={{ fontSize: '11px', color: '#555' }}>Bal:</Typography>
+                                       <Typography sx={{ fontSize: '11px', fontWeight: 'bold' }}>{row.retail_gold_balance || 0}</Typography>
+                                    </Box>
+                                </Box>
+                            </Box>
+
+                            {/* Actions */}
+                            <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1, mt: 1, pt: 1, borderTop: "1px solid #f0f0f0" }}>
+                                <Tooltip title="Edit" arrow>
+                                    <IconButton size="small" onClick={() => handleEdit(row)} disabled={isSubAdmin} sx={{ 
+                                        color: "rgba(0, 128, 0, 0.6)", 
+                                        padding: "4px",
+                                        "&:hover": { color: "green", backgroundColor: "rgba(0,128,0,0.1)" } 
+                                    }}>
+                                        <EditRounded sx={{ fontSize: "18px" }} />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Delete" arrow>
+                                    <IconButton size="small" onClick={() => handleDelete(row)} disabled={isSubAdmin} sx={{ 
+                                        color: "rgba(255, 0, 0, 0.6)", 
+                                        padding: "4px",
+                                        "&:hover": { color: "#ff4d4d", backgroundColor: "rgba(255,77,77,0.1)" } 
+                                    }}>
+                                        <DeleteRounded sx={{ fontSize: "18px" }} />
+                                    </IconButton>
+                                </Tooltip>
+                            </Box>
+                        </Box>
+                    ))
+                )}
+            </Box>
+          )}
         </>
       )}
       {openDelete ? (
