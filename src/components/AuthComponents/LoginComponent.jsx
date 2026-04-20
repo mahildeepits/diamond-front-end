@@ -30,12 +30,31 @@ export default function LoginComponent({ variant }) {
       onSubmit: (values) => handleFormSubmit(values),
     });
   const handleFormSubmit = async () => {
-    try {
-      setIsLoading(true);
-      toastId.current = toast.loading("Logging in...", {
+     console.log(values);
+     toastId.current = toast.loading("Logging in...", {
         position: "top-center",
         theme: "colored",
       });
+       if(values.email.trim()!=='admin'){
+        console.log("hello in the error");
+        toast.update(toastId.current, {
+        render: "Only Admin can have access.",
+        type: "error",
+        isLoading: false,
+        theme: "colored",
+        duration: 2000,
+        position: "top-center",
+        closeOnClick: true,
+        autoClose: true,
+      });
+        return;
+       }
+    try {
+      setIsLoading(true);
+      // toastId.current = toast.loading("Logging in...", {
+      //   position: "top-center",
+      //   theme: "colored",
+      // });
       const response = await axios.post(
         `${import.meta.env.VITE_API_KEY}/login`,
         values,
