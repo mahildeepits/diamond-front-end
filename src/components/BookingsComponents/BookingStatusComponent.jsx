@@ -62,6 +62,26 @@ export default function BookingStatusComponent({ data }) {
     }
   };
 
+  const handleToggleSync = async (type, newValue) => {
+    const payload = {
+      ...values,
+      gold_booking_status: type === 'gold_booking' ? (newValue ? 1 : 0) : (goldBooking ? 1 : 0),
+      current_rate_status: type === 'gold_rate' ? (newValue ? 1 : 0) : (goldRateVisible ? 1 : 0),
+      silver_booking_status: type === 'silver_booking' ? (newValue ? 1 : 0) : (silverBooking ? 1 : 0),
+      silver_rate_status: type === 'silver_rate' ? (newValue ? 1 : 0) : (silverRateVisible ? 1 : 0),
+    };
+    payload.status = (payload.gold_booking_status === 1 || payload.silver_booking_status === 1) ? 1 : 0;
+
+    try {
+      const res = await addBookingStatus(payload);
+      if (res.data.code == 200) {
+        toast.success("Booking status updated");
+      }
+    } catch (error) {
+      console.log("🚀 ~ handleToggleSync ~ error:", error);
+    }
+  };
+
   useEffect(() => {
     if (data) {
       setValues({
@@ -110,7 +130,11 @@ export default function BookingStatusComponent({ data }) {
             <Switch
               disabled={isSubAdmin}
               checked={goldBooking}
-              onChange={() => setGoldBooking(!goldBooking)}
+              onChange={() => {
+                const nextValue = !goldBooking;
+                setGoldBooking(nextValue);
+                handleToggleSync('gold_booking', nextValue);
+              }}
               color="warning"
             />
           }
@@ -126,7 +150,11 @@ export default function BookingStatusComponent({ data }) {
             <Switch
               disabled={isSubAdmin}
               checked={goldRateVisible}
-              onChange={() => setGoldRateVisible(!goldRateVisible)}
+              onChange={() => {
+                const nextValue = !goldRateVisible;
+                setGoldRateVisible(nextValue);
+                handleToggleSync('gold_rate', nextValue);
+              }}
               color="warning"
             />
           }
@@ -149,7 +177,11 @@ export default function BookingStatusComponent({ data }) {
             <Switch
               disabled={isSubAdmin}
               checked={silverBooking}
-              onChange={() => setSilverBooking(!silverBooking)}
+              onChange={() => {
+                const nextValue = !silverBooking;
+                setSilverBooking(nextValue);
+                handleToggleSync('silver_booking', nextValue);
+              }}
               color="default"
             />
           }
@@ -165,7 +197,11 @@ export default function BookingStatusComponent({ data }) {
             <Switch
               disabled={isSubAdmin}
               checked={silverRateVisible}
-              onChange={() => setSilverRateVisible(!silverRateVisible)}
+              onChange={() => {
+                const nextValue = !silverRateVisible;
+                setSilverRateVisible(nextValue);
+                handleToggleSync('silver_rate', nextValue);
+              }}
               color="default"
             />
           }
