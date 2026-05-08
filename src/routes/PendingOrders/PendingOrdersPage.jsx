@@ -139,7 +139,7 @@ export default function PendingOrdersPage() {
         <ErrorComponent />
       ) : (
         <>
-          <SearchComponent handleChange={handleSearch} />
+          <SearchComponent handleChange={handleSearch} searchValue={searchText} />
           <DataGridComponent rows={pendingOrders} columns={memoizedColumns} loading={isLoading || isFetching} />
         </>
       )}

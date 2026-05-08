@@ -168,7 +168,7 @@ export default function ConsolidateByClient() {
       ) : (
         <>
           <Box sx={{ display: "flex", alignItems: "center", width: "100%", justifyContent: "space-between", gap: "10px", flexDirection: { xs: "column", sm: "row" }, mb: 2 }}>
-            <SearchComponent handleChange={handleSearch} />
+            <SearchComponent handleChange={handleSearch} searchValue={searchText} />
             <ExportDataComponent handleClickExport={handleExports} />
           </Box>
           <DataGridComponent rows={consolidateData} columns={memoizedColumns} loading={isLoading || isFetching} applyHeight={true} />

@@ -154,7 +154,7 @@ export default function UsersComponent() {
         <ErrorComponent />
       ) : (
         <>
-          <SearchComponent handleChange={handleSearch} />
+          <SearchComponent handleChange={handleSearch} searchValue={searchText} />
           <DataGridComponent
             rows={subAdminData}
             columns={memoizedColumns}

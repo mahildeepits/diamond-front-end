@@ -207,7 +207,7 @@ export default function ClientsComponent({ isSubAdmin }) {
         <ErrorComponent />
       ) : (
         <>
-          <SearchComponent handleChange={handleSearch} />
+          <SearchComponent handleChange={handleSearch} searchValue={searchText} />
           {/* Custom Card List Replaces DataGrid */}
           {isLoading || isFetching ? (
             <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}><Loader /></Box>
