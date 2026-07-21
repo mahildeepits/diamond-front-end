@@ -347,7 +347,7 @@ export default function RateDifferenceFormComponent({ data }) {
       <Box sx={{ my: 2 }}>
         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <Typography component={"div"} sx={{ mb: 1 }}>
-            Enter your rate RETAIL GOLD difference
+            Enter your RETAIL GOLD Rate (Exact Amount)
           </Typography>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Typography variant="body2" sx={{ mr: 1 }}>
