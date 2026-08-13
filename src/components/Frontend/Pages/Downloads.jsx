@@ -151,7 +151,7 @@ export default function Downloads() {
                                 mb: 6,
                                 flexWrap: 'wrap'
                             }}>
-                                <a href="https://play.google.com/store/apps/details?id=com.ansh_jewellers.app" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                                <a href="https://play.google.com/store/apps/details?id=com.diamondbullionhouse.app" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
                                     <Box sx={{
                                         transition: 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
                                         '&:hover': { transform: 'scale(1.1) translateY(-5px)' }
@@ -159,7 +159,7 @@ export default function Downloads() {
                                         <img src={PlayStoreImg} alt="Get it on Play Store" style={{ height: '54px' }} />
                                     </Box>
                                 </a>
-                                <a href="https://apps.apple.com/us/app/ansh-jewellers/id6739967815" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                                <a href="https://apps.apple.com/in/app/diamond-bullion-house-gold/id6761295397" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
                                     <Box sx={{
                                         transition: 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
                                         '&:hover': { transform: 'scale(1.1) translateY(-5px)' }
